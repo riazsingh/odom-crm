@@ -1,617 +1,1431 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="ODOM CRM" />
-<title>ODOM CRM</title>
+<!-- saved from url=(0059)file:///C:/Users/riazs/Downloads/rumor-rides-log%20(1).html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rumor Rides — Ride Log</title>
+<link href="file:///C:/Users/riazs/Downloads/Rumor%20Rides%20%E2%80%94%20Ride%20Log_files/css2" rel="stylesheet">
 <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #ffffff;
-    --bg2: #f5f5f3;
-    --bg3: #eeece8;
-    --text: #1a1a1a;
-    --text2: #6b6b68;
-    --text3: #999994;
-    --border: rgba(0,0,0,0.12);
-    --border2: rgba(0,0,0,0.22);
-    --radius: 10px;
-    --radius-lg: 14px;
+    --black: #0a0a0a; --card: #1a1a1a; --card2: #222;
+    --red: #c0392b; --red-light: #ff5a47; --white: #f5f2ee;
+    --muted: #888880; --green: #5dcc8e; --yellow: #f5c842;
+    --border: rgba(192,57,43,0.3);
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #1c1c1e;
-      --bg2: #2c2c2e;
-      --bg3: #3a3a3c;
-      --text: #f2f2f7;
-      --text2: #aeaeb2;
-      --text3: #636366;
-      --border: rgba(255,255,255,0.1);
-      --border2: rgba(255,255,255,0.2);
-    }
+  body { background: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; font-weight: 300; padding: 28px 16px; min-height: 100vh; font-size: 14px; }
+  .container { max-width: 720px; margin: 0 auto; }
+  .header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 22px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+  .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300; letter-spacing: 0.06em; }
+  .brand-tag { font-size: 11px; letter-spacing: 0.18em; color: var(--red-light); text-transform: uppercase; margin-top: 5px; }
+  .header-right { text-align: right; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .header-right span { display: block; font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--white); letter-spacing: 0; text-transform: none; margin-top: 3px; }
+  .tabs { display: flex; gap: 2px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; }
+  .tab { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; padding: 12px 18px; background: none; border: none; color: var(--muted); cursor: pointer; font-family: 'Montserrat', sans-serif; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; }
+  .tab.active { color: var(--red-light); border-bottom-color: var(--red); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+  .sum-card { background: var(--card); padding: 16px 14px; border-top: 2px solid transparent; }
+  .sum-card.primary { border-top-color: var(--red); background: var(--card2); }
+  .sum-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .sum-value { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; line-height: 1; color: var(--white); }
+  .sum-card.primary .sum-value { color: var(--red-light); }
+  .sum-sub { font-size: 10px; color: var(--muted); margin-top: 5px; }
+  .insights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+  .insight-card { background: var(--card); padding: 16px 14px; border-left: 2px solid var(--border); }
+  .insight-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .insight-val { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--white); }
+  .insight-val.good { color: var(--green); }
+  .insight-val.warn { color: var(--yellow); }
+  .insight-sub { font-size: 10px; color: var(--muted); margin-top: 4px; }
+  .form-section { background: var(--card); padding: 22px 18px; margin-bottom: 10px; border-left: 2px solid var(--border); }
+  .sub-form { background: var(--card); padding: 22px 18px; margin-bottom: 10px; border-left: 2px solid rgba(240,192,64,0.4); }
+  .form-title { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .form-row.four { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .form-row.full { grid-template-columns: 1fr; }
+  .field { display: flex; flex-direction: column; }
+  .field label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .field input, .field select { background: #111; border: 1px solid rgba(255,255,255,0.12); color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 300; padding: 11px 12px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+  .field input:focus, .field select:focus { border-color: rgba(192,57,43,0.6); }
+  .field select option { background: #1a1a1a; }
+  .result-preview { background: var(--card2); border: 1px solid var(--border); padding: 16px 18px; margin: 14px 0; display: none; }
+  .result-preview.show { display: block; }
+  .result-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .result-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .result-val { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--white); }
+  .result-val.good { color: var(--green); }
+  .result-val.warn { color: var(--yellow); }
+  .result-val.bad { color: var(--red-light); }
+  .btn-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .btn { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; padding: 13px 24px; border: none; cursor: pointer; transition: opacity 0.2s; }
+  .btn:hover { opacity: 0.8; }
+  .btn-primary { background: var(--red); color: var(--white); }
+  .btn-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: var(--muted); }
+  .log-section { background: var(--card); padding: 22px 18px; margin-bottom: 10px; overflow-x: auto; }
+  .log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .log-title { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .log-count { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--red-light); }
+  table { width: 100%; border-collapse: collapse; min-width: 480px; }
+  th { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 500; text-align: left; padding: 0 10px 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); white-space: nowrap; }
+  th:not(:first-child) { text-align: right; }
+  td { padding: 13px 10px 13px 0; font-size: 13px; font-weight: 400; color: var(--white); border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; white-space: nowrap; }
+  td:not(:first-child) { text-align: right; font-family: 'Cormorant Garamond', serif; font-size: 20px; }
+  td.day-cell { font-size: 13px; color: #ccc8c0; min-width: 140px; white-space: normal; }
+  td.day-cell span { display: block; font-size: 11px; color: #666; margin-top: 3px; }
+  .badge { display: inline-block; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 7px; margin-left: 6px; vertical-align: middle; }
+  .badge-direct { background: rgba(93,204,142,0.18); color: var(--green); }
+  .badge-uber { background: rgba(255,90,71,0.15); color: var(--red-light); }
+  .badge-sub { background: rgba(245,200,66,0.15); color: var(--yellow); }
+  td.net-good { color: var(--green); }
+  td.net-warn { color: var(--yellow); }
+  td.net-bad { color: var(--red-light); }
+  .del-btn { background: none; border: none; color: #444; cursor: pointer; font-size: 16px; padding: 0 4px; transition: color 0.2s; }
+  .del-btn:hover { color: var(--red-light); }
+  .filter-bar { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .filter-btn { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 7px 14px; background: transparent; border: 1px solid rgba(255,255,255,0.12); color: var(--muted); cursor: pointer; font-family: 'Montserrat', sans-serif; transition: all 0.2s; }
+  .filter-btn.active { border-color: var(--red); color: var(--red-light); }
+  .source-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 10px; }
+  .source-card { background: var(--card); padding: 16px 14px; }
+  .source-name { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .source-count { font-family: 'Cormorant Garamond', serif; font-size: 30px; color: var(--white); }
+  .source-bar-wrap { height: 2px; background: rgba(255,255,255,0.07); margin-top: 8px; }
+  .source-bar { height: 2px; background: linear-gradient(90deg, var(--red), var(--red-light)); }
+  .source-pct { font-size: 10px; color: var(--red-light); margin-top: 5px; }
+  .conv-stat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+  .section-divider { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin: 18px 0 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .footer-bar { display: flex; justify-content: space-between; align-items: center; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 8px; }
+  .footer-conf { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #3a3a3a; }
+  .footer-word { font-family: 'Cormorant Garamond', serif; font-size: 13px; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(192,57,43,0.3); }
+  .empty-state { text-align: center; padding: 28px; color: var(--muted); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .prospect-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .prospect-btn { flex: 1; padding: 12px 8px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--muted); font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .prospect-btn.selected-hot { background: rgba(255,90,71,0.2); border-color: var(--red-light); color: var(--red-light); }
+  .prospect-btn.selected-warm { background: rgba(245,200,66,0.2); border-color: var(--yellow); color: var(--yellow); }
+  .prospect-btn.selected-cold { background: rgba(100,100,100,0.2); border-color: #666; color: #888; }
+  @media (max-width: 480px) {
+    .summary { grid-template-columns: repeat(2, 1fr); }
+    .insights { grid-template-columns: repeat(2, 1fr); }
+    .form-row.four { grid-template-columns: 1fr 1fr; }
+    .result-grid { grid-template-columns: repeat(2, 1fr); }
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; }
-
-  .app-header { background: var(--bg); border-bottom: 0.5px solid var(--border); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 10; }
-  .app-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; color: var(--text); }
-  .app-header p { font-size: 12px; color: var(--text3); margin-top: 1px; }
-
-  .main { padding: 16px; max-width: 600px; margin: 0 auto; }
-
-  .stats-bar { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 16px; }
-  .stat-card { background: var(--bg); border-radius: var(--radius); padding: 10px 12px; border: 0.5px solid var(--border); }
-  .stat-label { font-size: 11px; color: var(--text2); margin-bottom: 3px; }
-  .stat-val { font-size: 20px; font-weight: 600; color: var(--text); }
-
-  .top-bar { display: flex; gap: 8px; margin-bottom: 12px; }
-  .search-input { flex: 1; padding: 10px 12px; border-radius: var(--radius); border: 0.5px solid var(--border); background: var(--bg); color: var(--text); font-size: 15px; outline: none; }
-  .search-input:focus { border-color: var(--border2); }
-  .add-btn { background: var(--text); color: var(--bg); border: none; border-radius: var(--radius); padding: 10px 16px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
-  .add-btn:active { opacity: 0.8; transform: scale(0.97); }
-
-  .filters { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
-  .filters::-webkit-scrollbar { display: none; }
-  .pill { font-size: 12px; padding: 5px 13px; border-radius: 99px; border: 0.5px solid var(--border2); background: var(--bg); color: var(--text2); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
-  .pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-
-  .contact-list { display: flex; flex-direction: column; gap: 8px; }
-  .contact-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 13px 14px; cursor: pointer; transition: border-color 0.15s; }
-  .contact-card:active { background: var(--bg2); }
-
-  .card-top { display: flex; align-items: center; gap: 10px; }
-  .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
-  .av-corp { background: #dbeafe; color: #1e40af; }
-  .av-prospect { background: #ede9fe; color: #4c1d95; }
-  .av-hotel { background: #d1fae5; color: #065f46; }
-  @media (prefers-color-scheme: dark) {
-    .av-corp { background: #1e3a5f; color: #93c5fd; }
-    .av-prospect { background: #2e1a5e; color: #c4b5fd; }
-    .av-hotel { background: #064e3b; color: #6ee7b7; }
-  }
-  .card-name { font-size: 15px; font-weight: 600; color: var(--text); }
-  .card-sub { font-size: 12px; color: var(--text2); margin-top: 1px; }
-  .card-right { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
-
-  .heat-badge { font-size: 11px; padding: 2px 9px; border-radius: 99px; font-weight: 600; }
-  .heat-hot { background: #fee2d5; color: #9a3412; }
-  .heat-warm { background: #fef3c7; color: #92400e; }
-  .heat-cold { background: #dbeafe; color: #1e40af; }
-  @media (prefers-color-scheme: dark) {
-    .heat-hot { background: #431407; color: #fdba74; }
-    .heat-warm { background: #451a03; color: #fcd34d; }
-    .heat-cold { background: #1e3a5f; color: #93c5fd; }
-  }
-
-  .follow-tag { font-size: 11px; color: var(--text3); }
-  .follow-tag.due { color: #dc2626; font-weight: 600; }
-
-  .card-meta { display: flex; gap: 14px; margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--border); flex-wrap: wrap; }
-  .meta-item { font-size: 12px; color: var(--text2); }
-  .meta-item b { color: var(--text); font-weight: 600; }
-  .meta-item.stale { color: #dc2626; }
-  .meta-item.stale b { color: #dc2626; }
-
-  .ride-row { display: flex; gap: 8px; margin-top: 10px; }
-  .ride-cell { flex: 1; background: var(--bg2); border-radius: var(--radius); padding: 9px 11px; }
-  .ride-dir { font-size: 10px; color: var(--text3); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .ride-date { font-size: 13px; font-weight: 600; color: var(--text); }
-  .ride-amt { font-size: 11px; color: var(--text2); margin-top: 2px; }
-  .ride-none { font-size: 12px; color: var(--text3); font-style: italic; }
-
-  .proj-row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; margin-top: 8px; }
-  .proj-cell { background: var(--bg2); border-radius: var(--radius); padding: 8px 10px; }
-  .proj-label { font-size: 10px; color: var(--text3); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
-  .proj-val { font-size: 15px; font-weight: 600; color: var(--text); }
-
-  .last-note { font-size: 12px; color: var(--text2); margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--border); font-style: italic; line-height: 1.5; }
-
-  .card-actions { display: flex; gap: 6px; margin-top: 10px; }
-  .action-btn { flex: 1; font-size: 12px; font-weight: 500; padding: 8px 4px; border-radius: var(--radius); border: 0.5px solid var(--border2); background: var(--bg2); color: var(--text2); cursor: pointer; text-align: center; transition: background 0.1s; }
-  .action-btn:active { background: var(--bg3); }
-  .action-btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
-  .action-btn.primary:active { opacity: 0.85; }
-
-  .empty { text-align: center; padding: 3rem 1rem; color: var(--text3); font-size: 15px; }
-
-  /* Modal */
-  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: flex-end; justify-content: center; z-index: 100; padding: 0; }
-  @media (min-width: 500px) { .modal-bg { align-items: center; padding: 1rem; } }
-  .modal { background: var(--bg); border-radius: 20px 20px 0 0; padding: 20px 16px 32px; width: 100%; max-width: 480px; border: 0.5px solid var(--border); max-height: 92vh; overflow-y: auto; }
-  @media (min-width: 500px) { .modal { border-radius: var(--radius-lg); padding: 20px; } }
-  .modal-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 99px; margin: 0 auto 16px; }
-  .modal h2 { font-size: 17px; font-weight: 600; margin-bottom: 16px; }
-
-  .form-row { margin-bottom: 12px; }
-  .form-row label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 4px; font-weight: 500; }
-  .form-row input, .form-row select, .form-row textarea {
-    width: 100%; padding: 10px 12px; border-radius: var(--radius); border: 0.5px solid var(--border2);
-    background: var(--bg2); color: var(--text); font-size: 15px; outline: none;
-    -webkit-appearance: none; appearance: none;
-  }
-  .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--text3); }
-  .form-row textarea { height: 72px; resize: none; font-family: inherit; }
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-  .section-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin: 14px 0 8px; }
-
-  .modal-btns { display: flex; gap: 8px; margin-top: 16px; }
-  .modal-btns button { flex: 1; padding: 12px; border-radius: var(--radius); font-size: 15px; font-weight: 600; cursor: pointer; border: none; }
-  .cancel-btn { background: var(--bg2); color: var(--text2); }
-  .save-btn { background: var(--text); color: var(--bg); }
-  .save-btn:active { opacity: 0.85; }
-
-  .note-history { background: var(--bg2); border-radius: var(--radius); padding: 10px 12px; max-height: 150px; overflow-y: auto; margin-bottom: 12px; }
-  .note-entry { padding: 5px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; line-height: 1.5; }
-  .note-entry:last-child { border: none; padding-bottom: 0; }
-  .note-date { color: var(--text3); font-size: 11px; display: block; margin-bottom: 1px; }
-
-  .delete-btn { width: 100%; padding: 12px; border-radius: var(--radius); font-size: 14px; font-weight: 500; cursor: pointer; border: 0.5px solid #fca5a5; background: transparent; color: #dc2626; margin-top: 8px; }
 </style>
 </head>
 <body>
+<div class="container">
 
-<div class="app-header">
-  <h1>ODOM CRM</h1>
-  <p>Rumor Rides · Discreet Luxury Transportation</p>
-</div>
-
-<div class="main">
-  <div class="stats-bar" id="statsBar"></div>
-  <div class="top-bar">
-    <input class="search-input" type="text" id="searchInput" placeholder="Search contacts..." oninput="render()" autocomplete="off" />
-    <button class="add-btn" onclick="openAdd()">+ Add</button>
+  <div class="header">
+    <div>
+      <div class="brand-name">Rumor Rides</div>
+      <div class="brand-tag">Performance Log &nbsp;·&nbsp; Mar 24 – Jun 24, 2026</div>
+    </div>
+    <div class="header-right">Tracking Period<span>90 Days</span></div>
   </div>
-  <div class="filters" id="filters"></div>
-  <div class="contact-list" id="contactList"></div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="rides">Rides</button>
+    <button class="tab" data-tab="subcontractors">Subs</button>
+    <button class="tab" data-tab="conversions">Conversions</button>
+    <button class="tab" data-tab="sources">Sources</button>
+    <button class="tab" data-tab="crm">CRM</button>
+    <button class="tab" data-tab="reservations">Reservations</button>
+  </div>
+
+  <!-- RIDES -->
+  <div id="tab-rides" class="tab-panel active">
+    <div class="summary">
+      <div class="sum-card primary"><div class="sum-label">Total Net</div><div class="sum-value" id="s-net">$390</div></div>
+      <div class="sum-card"><div class="sum-label">Total Miles</div><div class="sum-value" id="s-miles">168</div></div>
+      <div class="sum-card"><div class="sum-label">Avg Net/Mile</div><div class="sum-value" id="s-npm">$2.32</div></div>
+      <div class="sum-card"><div class="sum-label">Rides Logged</div><div class="sum-value" id="s-rides">23</div></div>
+    </div>
+    <div class="summary" style="grid-template-columns: 1fr 1fr; margin-bottom: 16px;">
+      <div class="sum-card"><div class="sum-label">Total Time On Road</div><div class="sum-value" id="s-time">5h 50m</div><div class="sum-sub">from logged start/end times</div></div>
+      <div class="sum-card primary"><div class="sum-label">$/Hr On Road</div><div class="sum-value " id="s-phr">$67</div><div class="sum-sub">net ÷ hours driven</div></div>
+    </div>
+    <div class="insights">
+      <div class="insight-card"><div class="insight-label">Direct %</div><div class="insight-val good" id="i-dpct">45%</div><div class="insight-sub">of gross revenue</div></div>
+      <div class="insight-card"><div class="insight-label">Avg Ride Net</div><div class="insight-val" id="i-avgnet">$17</div><div class="insight-sub">per logged ride</div></div>
+      <div class="insight-card"><div class="insight-label">Avg Ride Time</div><div class="insight-val" id="i-avgtime">15m</div><div class="insight-sub">per logged ride</div></div>
+    </div>
+    <div class="form-section">
+      <div class="form-title" id="f-form-title">Log a Ride</div>
+      <div class="form-row four">
+        <div class="field"><label>Date</label><input type="date" id="f-date"></div>
+        <div class="field"><label>Type</label>
+          <select id="f-type">
+            <option value="direct">Direct</option>
+            <option value="uber-premier">Uber Premier</option>
+            <option value="uber-black">Uber Black</option>
+            <option value="uber-comfort">Uber Comfort</option>
+            <option value="blacklane">Blacklane</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Trip Time (mins)</label><input type="number" id="f-duration" placeholder="e.g. 25" step="1" min="0"></div>
+      </div>
+      <div class="form-row three">
+        <div class="field"><label>Gross ($)</label><input type="number" id="f-gross" placeholder="0.00" step="0.01" min="0"></div>
+        <div class="field"><label>Miles</label><input type="number" id="f-miles" placeholder="0.0" step="0.1" min="0"></div>
+        <div class="field"><label>Platform Cut (%)</label><input type="number" id="f-cut" placeholder="0" step="1" min="0" max="100"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Client Source</label>
+          <select id="f-source">
+            <option value="">— Select if known —</option>
+            <option value="referral">Referral</option>
+            <option value="organic">Organic / Inbound</option>
+            <option value="repeat">Repeat Direct Client</option>
+            <option value="social">Social / Instagram</option>
+            <option value="venue">Bar / Restaurant / Venue</option>
+            <option value="hotel">Hotel / Concierge</option>
+            <option value="cold">Cold Outreach</option>
+            <option value="website">Website</option>
+            <option value="platform">Platform</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Conversion Potential</label>
+          <select id="f-conv">
+            <option value="none">None / N/A</option>
+            <option value="possible">Possible — gave card</option>
+            <option value="likely">Likely — expressed interest</option>
+            <option value="converted">Converted — booked direct</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:10px;">
+        <label>Prospect Rating</label>
+        <div class="prospect-row">
+          <button type="button" class="prospect-btn" id="pb-hot" onclick="setProspect(&#39;hot&#39;)">🔥 Hot</button>
+          <button type="button" class="prospect-btn" id="pb-warm" onclick="setProspect(&#39;warm&#39;)">☀ Warm</button>
+          <button type="button" class="prospect-btn" id="pb-cold" onclick="setProspect(&#39;cold&#39;)">— Cold</button>
+        </div>
+      </div>
+      <div class="form-row" id="flight-row" style="display:none;">
+        <div class="field"><label>Airline</label><input type="text" id="f-airline" placeholder="e.g. AA, DL, UA" autocomplete="off" oninput="this.value=this.value.toUpperCase();updateFlightLink()"></div>
+        <div class="field"><label>Flight #</label>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input type="text" id="f-flightnum" placeholder="e.g. 1234" autocomplete="off" oninput="updateFlightLink()" style="flex:1;">
+            <a id="fa-link" href="#" target="_blank" rel="noopener" style="display:none;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--red-light);white-space:nowrap;text-decoration:none;border:1px solid rgba(192,57,43,0.4);padding:6px 10px;" onclick="return openFlightAware()">Track ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="field"><label>Notes</label><input type="text" id="f-notes" placeholder="e.g. FLL run, Galt Mile resident, corporate potential"></div>
+      </div>
+      <div class="result-preview" id="result-preview">
+        <div class="result-grid">
+          <div><div class="result-label">Cost (Fuel+Wear)</div><div class="result-val" id="r-fuel">$10.57</div></div>
+          <div><div class="result-label">Platform Take</div><div class="result-val" id="r-ptake">$30.19</div></div>
+          <div><div class="result-label">Your Net</div><div class="result-val good" id="r-net">$24.87</div></div>
+          <div><div class="result-label">Net / Mile</div><div class="result-val warn" id="r-npm">$0.81</div></div>
+        </div>
+      </div>
+      <input type="hidden" id="f-prospect" value="">
+      <div class="btn-row">
+        <button class="btn btn-primary" id="f-submit-btn" onclick="addRide()">Log Ride</button>
+        <button class="btn btn-ghost" onclick="clearForm()">Clear</button>
+      </div>
+    </div>
+    <div class="log-section">
+      <div class="log-header"><div class="log-title">Ride History</div><div style="display:flex;align-items:center;gap:8px;"><div class="log-count" id="ride-count">23 rides</div><button class="btn btn-ghost" style="padding:6px 12px;font-size:9px;" onclick="exportData()">Export</button><label class="btn btn-ghost" style="padding:6px 12px;font-size:9px;cursor:pointer;">Import<input type="file" accept=".json" style="display:none;" onchange="importData(event)"></label></div></div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="setFilter(&#39;all&#39;,this)">All</button>
+        <button class="filter-btn" onclick="setFilter(&#39;direct&#39;,this)">Direct</button>
+        <button class="filter-btn" onclick="setFilter(&#39;uber&#39;,this)">Uber</button>
+        <button class="filter-btn" onclick="setFilter(&#39;blacklane&#39;,this)">Blacklane</button>
+      </div>
+      <div id="table-container"><table><thead><tr><th>Ride</th><th>Gross</th><th>Miles</th><th>Net</th><th>Net/Mi</th><th></th></tr></thead><tbody><tr><td class="day-cell">Fri, Mar 27<span class="badge badge-uber">Premier</span><span>$6.50 - surge</span></td><td>$31</td><td>4.0</td><td>$15.51</td><td class="net-good">$3.88</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774623876806)">✎</button><button class="del-btn" onclick="deleteRide(1774623876806)">×</button></td></tr><tr><td class="day-cell">Fri, Mar 27<span class="badge badge-uber">Premier</span><span>$6.25 - surge</span></td><td>$15</td><td>2.0</td><td>$7.54</td><td class="net-good">$3.77</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774623832041)">✎</button><button class="del-btn" onclick="deleteRide(1774623832041)">×</button></td></tr><tr><td class="day-cell">Fri, Mar 27<span class="badge badge-direct">Direct</span><span>$1.50 - surge</span></td><td>$11</td><td>2.8</td><td>$9.81</td><td class="net-good">$3.53</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774623810991)">✎</button><button class="del-btn" onclick="deleteRide(1774623810991)">×</button></td></tr><tr><td class="day-cell">Fri, Mar 27<span class="badge badge-uber">Premier</span><span>$4.00 - tip.  $4.50 - surge</span></td><td>$17</td><td>2.0</td><td>$8.76</td><td class="net-good">$4.38</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774623780362)">✎</button><button class="del-btn" onclick="deleteRide(1774623780362)">×</button></td></tr><tr><td class="day-cell">Fri, Mar 27<span class="badge badge-direct">Direct</span><span>Seth Port</span></td><td>$40</td><td>7.1</td><td>$37.56</td><td class="net-good">$5.29</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774623754256)">✎</button><button class="del-btn" onclick="deleteRide(1774623754256)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-uber">Premier</span><span>$5.50 - surge</span></td><td>$66</td><td>30.8</td><td>$24.87</td><td class="net-warn">$0.81</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774590458317)">✎</button><button class="del-btn" onclick="deleteRide(1774590458317)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-uber">Premier</span><span>$9 - tip.  $3.50 -surge</span></td><td>$29</td><td>5.9</td><td>$13.75</td><td class="net-good">$2.33</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774590413097)">✎</button><button class="del-btn" onclick="deleteRide(1774590413097)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-uber">Premier</span><span>$3.50 - surge</span></td><td>$15</td><td>3.4</td><td>$6.76</td><td class="net-good">$1.98</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774590345492)">✎</button><button class="del-btn" onclick="deleteRide(1774590345492)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-uber">Premier</span></td><td>$11</td><td>3.8</td><td>$4.86</td><td class="net-good">$1.27</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774590304065)">✎</button><button class="del-btn" onclick="deleteRide(1774590304065)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-uber">Premier</span></td><td>$12</td><td>1.9</td><td>$5.70</td><td class="net-good">$3.05</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774590278775)">✎</button><button class="del-btn" onclick="deleteRide(1774590278775)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-uber">Premier</span></td><td>$13</td><td>2.5</td><td>$6.15</td><td class="net-good">$2.44</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774590250512)">✎</button><button class="del-btn" onclick="deleteRide(1774590250512)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-direct">Direct</span></td><td>$9</td><td>2.3</td><td>$8.21</td><td class="net-good">$3.55</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774590218225)">✎</button><button class="del-btn" onclick="deleteRide(1774590218225)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-uber">Premier</span></td><td>$22</td><td>4.4</td><td>$10.26</td><td class="net-good">$2.33</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774590188901)">✎</button><button class="del-btn" onclick="deleteRide(1774590188901)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-uber">Premier</span></td><td>$15</td><td>2.5</td><td>$7.47</td><td class="net-good">$2.99</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774590157739)">✎</button><button class="del-btn" onclick="deleteRide(1774590157739)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-uber">Premier</span></td><td>$13</td><td>2.1</td><td>$6.30</td><td class="net-good">$3.02</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774589869720)">✎</button><button class="del-btn" onclick="deleteRide(1774589869720)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-uber">Premier</span></td><td>$9</td><td>1.6</td><td>$4.30</td><td class="net-good">$2.64</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774589705545)">✎</button><button class="del-btn" onclick="deleteRide(1774589705545)">×</button></td></tr><tr><td class="day-cell">Thu, Mar 26<span class="badge badge-direct">Direct</span><span>Pat</span></td><td>$48</td><td>5.5</td><td>$46.11</td><td class="net-good">$8.38</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774589645255)">✎</button><button class="del-btn" onclick="deleteRide(1774589645255)">×</button></td></tr><tr><td class="day-cell">Tue, Mar 24<span class="badge badge-direct">Direct</span></td><td>$162</td><td>58.3</td><td>$141.98</td><td class="net-good">$2.44</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774589593068)">✎</button><button class="del-btn" onclick="deleteRide(1774589593068)">×</button></td></tr><tr><td class="day-cell">Tue, Mar 24<span class="badge badge-uber">Premier</span></td><td>$9</td><td>2.1</td><td>$4.14</td><td class="net-good">$1.96</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774589492734)">✎</button><button class="del-btn" onclick="deleteRide(1774589492734)">×</button></td></tr><tr><td class="day-cell">Tue, Mar 24<span class="badge badge-uber">Premier</span></td><td>$16</td><td>3.3</td><td>$7.28</td><td class="net-good">$2.18</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774589453048)">✎</button><button class="del-btn" onclick="deleteRide(1774589453048)">×</button></td></tr><tr><td class="day-cell">Tue, Mar 24<span class="badge badge-uber">Comfort</span></td><td>$9</td><td>4.9</td><td>$3.27</td><td class="net-warn">$0.67</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774589408433)">✎</button><button class="del-btn" onclick="deleteRide(1774589408433)">×</button></td></tr><tr><td class="day-cell">Tue, Mar 24<span class="badge badge-uber">Comfort</span></td><td>$12</td><td>9.9</td><td>$3.33</td><td class="net-bad">$0.34</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774589360415)">✎</button><button class="del-btn" onclick="deleteRide(1774589360415)">×</button></td></tr><tr><td class="day-cell">Tue, Mar 24<span class="badge badge-uber">Comfort</span></td><td>$14</td><td>4.9</td><td>$6.13</td><td class="net-good">$1.25</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(1774589324959)">✎</button><button class="del-btn" onclick="deleteRide(1774589324959)">×</button></td></tr></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- SUBCONTRACTORS -->
+  <div id="tab-subcontractors" class="tab-panel">
+    <div class="summary">
+      <div class="sum-card primary"><div class="sum-label">Sub Gross</div><div class="sum-value" id="sub-gross">$0</div></div>
+      <div class="sum-card"><div class="sum-label">Sub Rides</div><div class="sum-value" id="sub-count">0</div></div>
+      <div class="sum-card"><div class="sum-label">Your Cut</div><div class="sum-value" id="sub-yourcut">$0</div></div>
+      <div class="sum-card"><div class="sum-label">Sub % of Total</div><div class="sum-value" id="sub-pct">0%</div><div class="sum-sub">fleet growth indicator</div></div>
+    </div>
+    <div class="sub-form">
+      <div class="form-title">Log Subcontractor Ride</div>
+      <div class="form-row three">
+        <div class="field"><label>Date</label><input type="date" id="sf-date"></div>
+        <div class="field"><label>Driver</label>
+          <select id="sf-driver"><option value="sub1">Sub 1</option><option value="sub2">Sub 2</option></select>
+        </div>
+        <div class="field"><label>Ride Type</label>
+          <select id="sf-type">
+            <option value="direct">Direct</option>
+            <option value="uber-premier">Uber Premier</option>
+            <option value="uber-black">Uber Black</option>
+            <option value="uber-comfort">Uber Comfort</option>
+            <option value="blacklane">Blacklane</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row three">
+        <div class="field"><label>Ride Gross ($)</label><input type="number" id="sf-gross" placeholder="0.00" step="0.01" min="0"></div>
+        <div class="field"><label>Miles</label><input type="number" id="sf-miles" placeholder="0.0" step="0.1" min="0"></div>
+        <div class="field"><label>Your Cut (%)</label><input type="number" id="sf-yourcut" placeholder="20" step="1" min="0" max="100" value="20"></div>
+      </div>
+      <div class="form-row full">
+        <div class="field"><label>Notes</label><input type="text" id="sf-notes" placeholder="e.g. Airport run, client feedback, pricing issue"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="addSubRide()">Log Sub Ride</button>
+        <button class="btn btn-ghost" onclick="clearSubForm()">Clear</button>
+      </div>
+    </div>
+    <div class="log-section">
+      <div class="log-header"><div class="log-title">Sub Ride History</div><div class="log-count" id="sub-ride-count">0 rides</div></div>
+      <div id="sub-table-container"><div class="empty-state">No sub rides logged yet</div></div>
+    </div>
+  </div>
+
+  <!-- CONVERSIONS -->
+  <div id="tab-conversions" class="tab-panel">
+    <div class="conv-stat">
+      <div class="sum-card"><div class="sum-label">Cards Given</div><div class="sum-value" id="cv-possible">0</div></div>
+      <div class="sum-card"><div class="sum-label">Expressed Interest</div><div class="sum-value" id="cv-likely">0</div></div>
+      <div class="sum-card primary"><div class="sum-label">Converted Direct</div><div class="sum-value" id="cv-converted">0</div></div>
+    </div>
+    <div class="insights" style="grid-template-columns:1fr 1fr;">
+      <div class="insight-card"><div class="insight-label">Conversion Rate</div><div class="insight-val good" id="cv-rate">0%</div><div class="insight-sub">interest → direct booking</div></div>
+      <div class="insight-card"><div class="insight-label">Active Pipeline</div><div class="insight-val" id="cv-pipeline">0 leads</div><div class="insight-sub">cards + interest</div></div>
+    </div>
+    <div class="log-section">
+      <div class="log-header"><div class="log-title">Conversion Activity</div></div>
+      <div id="conv-table-container"><div class="empty-state">No conversion activity logged yet</div></div>
+    </div>
+  </div>
+
+  <!-- CLIENT SOURCES -->
+  <div id="tab-sources" class="tab-panel">
+    <div class="section-divider">Where Your Direct Clients Come From</div>
+    <div class="source-grid" id="source-grid"><div class="source-card"><div class="source-name">Organic / Inbound</div><div class="source-count">13</div><div class="source-bar-wrap"><div class="source-bar" style="width:100%"></div></div><div class="source-pct">87% of direct rides</div></div><div class="source-card"><div class="source-name">Repeat Direct</div><div class="source-count">2</div><div class="source-bar-wrap"><div class="source-bar" style="width:15%"></div></div><div class="source-pct">13% of direct rides</div></div></div>
+    <div class="section-divider">Net Revenue by Source</div>
+    <div class="log-section" style="margin-bottom:10px;">
+      <div id="source-revenue-container"><table><thead><tr><th>Source</th><th>Net Revenue</th><th>Rides</th><th>Avg/Ride</th></tr></thead><tbody><tr><td class="day-cell">Repeat Direct</td><td class="net-good">$188</td><td>2 rides</td><td>$94 avg</td></tr><tr><td class="day-cell">Organic / Inbound</td><td class="net-good">$115</td><td>13 rides</td><td>$9 avg</td></tr></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="footer-conf">Confidential · Rumor Rides LLC · rumorrides.com</div>
+    <div class="footer-word">Seen</div>
+  </div>
+
+</div>
+<script>
+  const FUEL_CPM = 4.45 / 23;
+  const WEAR_CPM = 0.15;
+  const PLATFORM_CUTS = { 'direct':0,'uber-premier':0.46,'uber-black':0.46,'uber-comfort':0.46,'blacklane':0.20,'other':0 };
+  const TYPE_LABELS = { 'direct':'Direct','uber-premier':'Premier','uber-black':'Black','uber-comfort':'Comfort','blacklane':'Blacklane','other':'Other' };
+  const SOURCE_LABELS = { 'referral':'Referral','organic':'Organic / Inbound','repeat':'Repeat Direct','social':'Social','venue':'Venue','hotel':'Hotel/Concierge','cold':'Cold Outreach','website':'Website','platform':'Platform','other':'Other','':"Unknown" };
+  const CONV_LABELS = { 'none':'—','possible':'Card Given','likely':'Expressed Interest','converted':'Converted ✓' };
+
+  let rides = JSON.parse(localStorage.getItem('rr-rides2') || '[]');
+  let subRides = JSON.parse(localStorage.getItem('rr-sub-rides2') || '[]');
+  let currentFilter = 'all';
+  let editingId = null;
+  const todayStr = new Date().toISOString().split('T')[0];
+  document.getElementById('f-date').value = todayStr;
+  document.getElementById('sf-date').value = todayStr;
+
+  document.querySelectorAll('.tab').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const name = this.getAttribute('data-tab');
+      document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      document.querySelectorAll('.tab').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('tab-'+name).classList.add('active');
+      this.classList.add('active');
+    });
+  });
+
+  document.getElementById('f-type').addEventListener('change', function() {
+    const cut = PLATFORM_CUTS[this.value] * 100;
+    document.getElementById('f-cut').value = cut > 0 ? cut : '';
+    calculatePreview();
+    // Show flight row for airport-relevant ride types
+    const isAirport = ['direct','uber-black','uber-premier','blacklane'].includes(this.value);
+    document.getElementById('flight-row').style.display = isAirport ? '' : 'none';
+  });
+
+  function updateFlightLink() {
+    const airline = document.getElementById('f-airline').value.trim().toUpperCase();
+    const num = document.getElementById('f-flightnum').value.trim();
+    const link = document.getElementById('fa-link');
+    if (airline && num) {
+      link.style.display = 'inline-block';
+      link.dataset.url = 'https://flightaware.com/live/flight/' + airline + num;
+    } else {
+      link.style.display = 'none';
+    }
+  }
+
+  function openFlightAware() {
+    const link = document.getElementById('fa-link');
+    if (link.dataset.url) window.open(link.dataset.url, '_blank');
+    return false;
+  }
+  ['f-gross','f-miles','f-cut'].forEach(id => document.getElementById(id).addEventListener('input', calculatePreview));
+
+  function calculatePreview() {
+    const gross = parseFloat(document.getElementById('f-gross').value)||0;
+    const miles = parseFloat(document.getElementById('f-miles').value)||0;
+    const cut = parseFloat(document.getElementById('f-cut').value)||0;
+    if (!gross||!miles) { document.getElementById('result-preview').classList.remove('show'); return; }
+    const platformTake = gross*(cut/100);
+    const costTotal = miles*(FUEL_CPM+WEAR_CPM);
+    const net = gross-platformTake-costTotal;
+    const npm = net/miles;
+    document.getElementById('r-fuel').textContent = '$'+costTotal.toFixed(2);
+    document.getElementById('r-ptake').textContent = '$'+platformTake.toFixed(2);
+    const ne = document.getElementById('r-net');
+    ne.textContent='$'+net.toFixed(2);
+    ne.className='result-val '+(net>15?'good':net>5?'warn':'bad');
+    const npm_el = document.getElementById('r-npm');
+    npm_el.textContent='$'+npm.toFixed(2);
+    npm_el.className='result-val '+(npm>=1.0?'good':npm>=0.50?'warn':'bad');
+    document.getElementById('result-preview').classList.add('show');
+  }
+
+  function timeToMins(t) { if(!t) return null; const [h,m]=t.split(':').map(Number); return h*60+m; }
+
+  function addRide() {
+    const date=document.getElementById('f-date').value;
+    const type=document.getElementById('f-type').value;
+    const gross=parseFloat(document.getElementById('f-gross').value);
+    const miles=parseFloat(document.getElementById('f-miles').value);
+    const cut=parseFloat(document.getElementById('f-cut').value)||0;
+    const notes=document.getElementById('f-notes').value.trim();
+    const source=document.getElementById('f-source').value;
+    const conv=document.getElementById('f-conv').value;
+    const prospect=document.getElementById('f-prospect').value||'';
+    const durationMins=parseInt(document.getElementById('f-duration').value)||null;
+    if(!date||!gross||!miles){alert('Please enter date, gross, and miles.');return;}
+    const platformTake=gross*(cut/100);
+    const costTotal=miles*(FUEL_CPM+WEAR_CPM);
+    const net=gross-platformTake-costTotal;
+    const npm=net/miles;
+    const airline=document.getElementById('f-airline').value.trim().toUpperCase();
+    const flightNum=document.getElementById('f-flightnum').value.trim();
+    const rideData={date,type,gross,miles,cut,net,npm,notes,source,conv,prospect,durationMins,airline,flightNum};
+    if(editingId!==null){
+      rides=rides.map(r=>r.id===editingId?{...r,...rideData}:r);
+      editingId=null;
+    } else {
+      rides.unshift({id:Date.now(),...rideData});
+    }
+    localStorage.setItem('rr-rides2',JSON.stringify(rides));
+    renderAll();clearForm();
+  }
+
+  function editRide(id) {
+    const r=rides.find(r=>r.id===id);
+    if(!r) return;
+    editingId=id;
+    document.getElementById('f-date').value=r.date;
+    document.getElementById('f-type').value=r.type;
+    document.getElementById('f-gross').value=r.gross;
+    document.getElementById('f-miles').value=r.miles;
+    document.getElementById('f-cut').value=r.cut||0;
+    document.getElementById('f-notes').value=r.notes||'';
+    document.getElementById('f-source').value=r.source||'';
+    document.getElementById('f-conv').value=r.conv||'none';
+    setProspect(r.prospect||'');
+    document.getElementById('f-duration').value=r.durationMins||'';
+    document.getElementById('f-airline').value=r.airline||'';
+    document.getElementById('f-flightnum').value=r.flightNum||'';
+    const isAirport2=['direct','uber-black','uber-premier','blacklane'].includes(r.type);
+    document.getElementById('flight-row').style.display=isAirport2?'':'none';
+    updateFlightLink();
+    document.getElementById('f-form-title').textContent='Editing Ride';
+    document.getElementById('f-submit-btn').textContent='Save Changes';
+    calculatePreview();
+    document.querySelector('.form-section').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  function deleteRide(id) { rides=rides.filter(r=>r.id!==id); localStorage.setItem('rr-rides2',JSON.stringify(rides)); renderAll(); }
+
+  function addSubRide() {
+    const date=document.getElementById('sf-date').value;
+    const driver=document.getElementById('sf-driver').value;
+    const type=document.getElementById('sf-type').value;
+    const gross=parseFloat(document.getElementById('sf-gross').value);
+    const miles=parseFloat(document.getElementById('sf-miles').value);
+    const yourCutPct=parseFloat(document.getElementById('sf-yourcut').value)||20;
+    const notes=document.getElementById('sf-notes').value.trim();
+    if(!date||!gross||!miles){alert('Please enter date, gross, and miles.');return;}
+    const yourCut=gross*(yourCutPct/100);
+    subRides.unshift({id:Date.now(),date,driver,type,gross,miles,yourCutPct,yourCut,notes});
+    localStorage.setItem('rr-sub-rides2',JSON.stringify(subRides));
+    renderAll();clearSubForm();
+  }
+
+  function deleteSubRide(id) { subRides=subRides.filter(r=>r.id!==id); localStorage.setItem('rr-sub-rides2',JSON.stringify(subRides)); renderAll(); }
+
+  function clearForm() {
+    ['f-gross','f-miles','f-cut','f-notes','f-duration','f-airline','f-flightnum'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('flight-row').style.display='none';
+    document.getElementById('fa-link').style.display='none';
+    document.getElementById('f-type').value='direct';
+    document.getElementById('f-source').value='';
+    document.getElementById('f-conv').value='none';
+    document.getElementById('f-date').value=todayStr;
+    document.getElementById('result-preview').classList.remove('show');
+    editingId=null;
+    setProspect('');
+    document.getElementById('f-form-title').textContent='Log a Ride';
+    document.getElementById('f-submit-btn').textContent='Log Ride';
+  }
+
+  function clearSubForm() {
+    ['sf-gross','sf-miles','sf-notes'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('sf-date').value=todayStr;
+    document.getElementById('sf-yourcut').value='20';
+  }
+
+  function setFilter(f,btn) {
+    currentFilter=f;
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderRideTable();
+  }
+
+  function filteredRides() {
+    if(currentFilter==='all') return rides;
+    if(currentFilter==='uber') return rides.filter(r=>r.type.startsWith('uber'));
+    return rides.filter(r=>r.type===currentFilter);
+  }
+
+  function typeBadge(type) {
+    const cls=type==='direct'?'badge-direct':type.startsWith('uber')||type==='blacklane'?'badge-uber':'badge-sub';
+    return `<span class="badge ${cls}">${TYPE_LABELS[type]||type}</span>`;
+  }
+
+  function fmtDate(s) { const d=new Date(s+'T12:00:00'); return d.toLocaleDateString('en-US',{month:'short',day:'numeric',weekday:'short'}); }
+  function npmClass(n) { return n>=1.0?'net-good':n>=0.50?'net-warn':'net-bad'; }
+
+  function renderAll() { renderSummary();renderRideTable();renderSubSummary();renderSubTable();renderConversions();renderSources(); }
+
+  function renderSummary() {
+    const totalNet=rides.reduce((a,r)=>a+r.net,0);
+    const totalMiles=rides.reduce((a,r)=>a+r.miles,0);
+    const avgNpm=totalMiles>0?totalNet/totalMiles:0;
+    const totalMins=rides.reduce((a,r)=>a+(r.durationMins||0),0);
+    const phr=totalMins>0?(totalNet/(totalMins/60)):null;
+    const directGross=rides.filter(r=>r.type==='direct').reduce((a,r)=>a+r.gross,0);
+    const totalGross=rides.reduce((a,r)=>a+r.gross,0);
+    const dpct=totalGross>0?Math.round((directGross/totalGross)*100):0;
+    const avgNet=rides.length>0?totalNet/rides.length:0;
+    const ridesWithTime=rides.filter(r=>r.durationMins);
+    const avgTimeMins=ridesWithTime.length>0?Math.round(ridesWithTime.reduce((a,r)=>a+r.durationMins,0)/ridesWithTime.length):null;
+    const totalHrs=Math.floor(totalMins/60);
+    const totalRemMins=totalMins%60;
+
+    document.getElementById('s-net').textContent='$'+totalNet.toFixed(0);
+    document.getElementById('s-miles').textContent=totalMiles.toFixed(0);
+    document.getElementById('s-npm').textContent='$'+avgNpm.toFixed(2);
+    document.getElementById('s-rides').textContent=rides.length;
+    document.getElementById('s-time').textContent=totalMins>0?(totalHrs+'h '+totalRemMins+'m'):'—';
+    const phrEl=document.getElementById('s-phr');
+    phrEl.textContent=phr!==null?'$'+phr.toFixed(0):'—';
+    phrEl.className='sum-value'+(phr>=50?' '+'':phr>=25?' '+'':'');
+    document.getElementById('i-dpct').textContent=dpct+'%';
+    document.getElementById('i-avgnet').textContent='$'+avgNet.toFixed(0);
+    document.getElementById('i-avgtime').textContent=avgTimeMins!==null?(Math.floor(avgTimeMins/60)>0?Math.floor(avgTimeMins/60)+'h ':'')+((avgTimeMins%60)+'m'):'—';
+  }
+
+  function renderRideTable() {
+    const container=document.getElementById('table-container');
+    const data=filteredRides();
+    document.getElementById('ride-count').textContent=data.length+' ride'+(data.length!==1?'s':'');
+    if(!data.length){container.innerHTML='<div class="empty-state">No rides logged yet</div>';return;}
+    const rows=data.map(r=>{
+      const timeStr=(r.startTime&&r.endTime)?r.startTime+'–'+r.endTime:'';
+      const sub2=[timeStr,r.notes].filter(Boolean).join(' · ');
+      const flightInfo=r.airline&&r.flightNum?`<a href="https://flightaware.com/live/flight/${r.airline}${r.flightNum}" target="_blank" rel="noopener" style="color:var(--red-light);text-decoration:none;font-size:9px;letter-spacing:0.1em;margin-left:6px;">${r.airline}${r.flightNum} ↗</a>`:'';
+      const prospectBadge = r.prospect==='hot'?'<span style="font-size:9px;margin-left:4px;">🔥</span>':r.prospect==='warm'?'<span style="font-size:9px;margin-left:4px;">☀</span>':'';
+      return `<tr><td class="day-cell">${fmtDate(r.date)}${typeBadge(r.type)}${prospectBadge}${flightInfo}${sub2?`<span>${sub2}</span>`:''}</td><td>$${r.gross.toFixed(0)}</td><td>${r.miles.toFixed(1)}</td><td>$${r.net.toFixed(2)}</td><td class="${npmClass(r.npm)}">$${r.npm.toFixed(2)}</td><td style="text-align:right;white-space:nowrap;"><button class="del-btn" style="color:#555;font-size:12px;margin-right:6px;" onclick="editRide(${r.id})">✎</button><button class="del-btn" onclick="deleteRide(${r.id})">×</button></td></tr>`;
+    }).join('');
+    container.innerHTML=`<table><thead><tr><th>Ride</th><th>Gross</th><th>Miles</th><th>Net</th><th>Net/Mi</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  function renderSubSummary() {
+    const subGross=subRides.reduce((a,r)=>a+r.gross,0);
+    const yourCut=subRides.reduce((a,r)=>a+r.yourCut,0);
+    const allGross=rides.reduce((a,r)=>a+r.gross,0)+subGross;
+    const pct=allGross>0?Math.round((subGross/allGross)*100):0;
+    document.getElementById('sub-gross').textContent='$'+subGross.toFixed(0);
+    document.getElementById('sub-count').textContent=subRides.length;
+    document.getElementById('sub-yourcut').textContent='$'+yourCut.toFixed(0);
+    document.getElementById('sub-pct').textContent=pct+'%';
+    document.getElementById('sub-ride-count').textContent=subRides.length+' ride'+(subRides.length!==1?'s':'');
+  }
+
+  function renderSubTable() {
+    const container=document.getElementById('sub-table-container');
+    if(!subRides.length){container.innerHTML='<div class="empty-state">No sub rides logged yet</div>';return;}
+    const rows=subRides.map(r=>`<tr><td class="day-cell">${fmtDate(r.date)}<span class="badge badge-sub">${r.driver==='sub1'?'Sub 1':'Sub 2'}</span>${r.notes?`<span>${r.notes}</span>`:''}</td><td>$${r.gross.toFixed(0)}</td><td>${r.miles.toFixed(1)}</td><td class="net-good">$${r.yourCut.toFixed(2)}</td><td>${r.yourCutPct}%</td><td><button class="del-btn" onclick="deleteSubRide(${r.id})">×</button></td></tr>`).join('');
+    container.innerHTML=`<table><thead><tr><th>Ride</th><th>Gross</th><th>Miles</th><th>Your Cut</th><th>%</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  function renderConversions() {
+    const possible=rides.filter(r=>r.conv==='possible').length;
+    const likely=rides.filter(r=>r.conv==='likely').length;
+    const converted=rides.filter(r=>r.conv==='converted').length;
+    const pipeline=possible+likely;
+    const rate=(pipeline+converted)>0?Math.round((converted/(pipeline+converted))*100):0;
+    document.getElementById('cv-possible').textContent=possible;
+    document.getElementById('cv-likely').textContent=likely;
+    document.getElementById('cv-converted').textContent=converted;
+    document.getElementById('cv-rate').textContent=rate+'%';
+    document.getElementById('cv-pipeline').textContent=pipeline+' leads';
+    const convRides=rides.filter(r=>r.conv&&r.conv!=='none');
+    const container=document.getElementById('conv-table-container');
+    if(!convRides.length){container.innerHTML='<div class="empty-state">No conversion activity logged yet</div>';return;}
+    const rows=convRides.map(r=>`<tr><td class="day-cell">${fmtDate(r.date)}${typeBadge(r.type)}${r.notes?`<span>${r.notes}</span>`:''}</td><td style="text-align:right;font-size:10px;font-family:Montserrat,sans-serif;">${CONV_LABELS[r.conv]||'—'}</td><td style="text-align:right;font-size:10px;font-family:Montserrat,sans-serif;color:var(--muted)">${SOURCE_LABELS[r.source]||'—'}</td></tr>`).join('');
+    container.innerHTML=`<table><thead><tr><th>Ride</th><th>Status</th><th>Source</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  function renderSources() {
+    const directRides=rides.filter(r=>r.source&&r.source!==''&&r.source!=='platform');
+    if(!directRides.length){
+      document.getElementById('source-grid').innerHTML='<div class="empty-state" style="grid-column:1/-1">No source data yet</div>';
+      document.getElementById('source-revenue-container').innerHTML='<div class="empty-state">No source data yet</div>';
+      return;
+    }
+    const counts={},revenue={};
+    directRides.forEach(r=>{counts[r.source]=(counts[r.source]||0)+1;revenue[r.source]=(revenue[r.source]||0)+r.net;});
+    const total=directRides.length;
+    const maxCount=Math.max(...Object.values(counts));
+    const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+    document.getElementById('source-grid').innerHTML=sorted.map(([src,cnt])=>{
+      const pct=Math.round((cnt/total)*100);
+      const barW=Math.round((cnt/maxCount)*100);
+      return `<div class="source-card"><div class="source-name">${SOURCE_LABELS[src]||src}</div><div class="source-count">${cnt}</div><div class="source-bar-wrap"><div class="source-bar" style="width:${barW}%"></div></div><div class="source-pct">${pct}% of direct rides</div></div>`;
+    }).join('');
+    const revSorted=Object.entries(revenue).sort((a,b)=>b[1]-a[1]);
+    const rows=revSorted.map(([src,rev])=>`<tr><td class="day-cell">${SOURCE_LABELS[src]||src}</td><td class="net-good">$${rev.toFixed(0)}</td><td>${counts[src]} rides</td><td>$${(rev/counts[src]).toFixed(0)} avg</td></tr>`).join('');
+    document.getElementById('source-revenue-container').innerHTML=`<table><thead><tr><th>Source</th><th>Net Revenue</th><th>Rides</th><th>Avg/Ride</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  function setProspect(val) {
+    const el = document.getElementById('f-prospect');
+    if(el) el.value = val;
+    ['hot','warm','cold'].forEach(function(v) {
+      const btn = document.getElementById('pb-'+v);
+      if(btn) btn.className = 'prospect-btn' + (val===v ? ' selected-'+v : '');
+    });
+  }
+
+  function exportData() {
+    const data = {
+      rides: JSON.parse(localStorage.getItem('rr-rides2') || '[]'),
+      subRides: JSON.parse(localStorage.getItem('rr-sub-rides2') || '[]'),
+      exported: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'rumor-rides-backup-' + new Date().toISOString().split('T')[0] + '.json';
+    a.click();
+  }
+
+  function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (data.rides) { localStorage.setItem('rr-rides2', JSON.stringify(data.rides)); rides = data.rides; }
+        if (data.subRides) { localStorage.setItem('rr-sub-rides2', JSON.stringify(data.subRides)); subRides = data.subRides; }
+        renderAll();
+        alert('Import successful — ' + (data.rides ? data.rides.length : 0) + ' rides loaded.');
+      } catch(err) { alert('Import failed. Make sure you are using a valid Rumor Rides backup file.'); }
+    };
+    reader.readAsText(file);
+  }
+
+  renderAll();
+</script>
+
+
+<!-- ===== RESERVATIONS TAB ===== -->
+<style>
+  #tab-reservations .res-summary { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:16px; }
+  #tab-reservations .res-form { background:var(--card); padding:22px 18px; margin-bottom:10px; border-left:2px solid var(--border); }
+  #tab-reservations .res-list { display:flex; flex-direction:column; gap:8px; }
+  #tab-reservations .res-card { background:var(--card); border-left:2px solid var(--border); padding:14px 16px; }
+  #tab-reservations .res-card.upcoming { border-left-color:var(--green); }
+  #tab-reservations .res-card.today { border-left-color:var(--yellow); }
+  #tab-reservations .res-card.overdue { border-left-color:var(--red-light); }
+  #tab-reservations .res-card.done { border-left-color:#333; opacity:0.55; }
+  #tab-reservations .rc-top { display:flex; align-items:flex-start; gap:10px; justify-content:space-between; }
+  #tab-reservations .rc-client { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--white); }
+  #tab-reservations .rc-datetime { font-size:11px; letter-spacing:0.1em; color:var(--muted); margin-top:3px; }
+  #tab-reservations .rc-right { text-align:right; flex-shrink:0; }
+  #tab-reservations .rc-status { font-size:9px; letter-spacing:0.12em; text-transform:uppercase; padding:3px 8px; }
+  #tab-reservations .s-upcoming { background:rgba(93,204,142,0.15); color:var(--green); }
+  #tab-reservations .s-today { background:rgba(245,200,66,0.18); color:var(--yellow); }
+  #tab-reservations .s-overdue { background:rgba(255,90,71,0.18); color:var(--red-light); }
+  #tab-reservations .s-done { background:rgba(255,255,255,0.06); color:var(--muted); }
+  #tab-reservations .rc-amount { font-family:'Cormorant Garamond',serif; font-size:20px; color:var(--white); margin-top:4px; }
+  #tab-reservations .rc-route { font-size:12px; color:var(--muted); margin-top:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06); letter-spacing:0.04em; }
+  #tab-reservations .rc-flight { font-size:11px; color:var(--muted); margin-top:4px; }
+  #tab-reservations .rc-actions { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+  #tab-reservations .ra-btn { font-family:'Montserrat',sans-serif; font-size:10px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; padding:9px 10px; border:1px solid rgba(255,255,255,0.12); background:transparent; color:var(--muted); cursor:pointer; transition:all 0.2s; flex:1; text-align:center; min-width:60px; }
+  #tab-reservations .ra-btn:hover { border-color:rgba(255,255,255,0.3); color:var(--white); }
+  #tab-reservations .ra-btn.primary { background:var(--red); border-color:var(--red); color:var(--white); }
+  #tab-reservations .ra-btn.green { background:rgba(93,204,142,0.15); border-color:var(--green); color:var(--green); }
+  #tab-reservations .rc-confirm-sent { font-size:10px; color:var(--green); margin-top:6px; letter-spacing:0.08em; }
+  #tab-reservations .res-empty { text-align:center; padding:28px; color:var(--muted); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; }
+  .res-modal-bg { position:fixed; inset:0; background:rgba(0,0,0,0.75); display:flex; align-items:flex-end; justify-content:center; z-index:200; }
+  @media(min-width:500px){ .res-modal-bg { align-items:center; } }
+  .res-modal { background:var(--card); width:100%; max-width:480px; padding:22px 18px 32px; max-height:90vh; overflow-y:auto; border-top:2px solid var(--red); }
+  .res-modal h3 { font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:18px; }
+  .res-modal .field { display:flex; flex-direction:column; margin-bottom:12px; }
+  .res-modal .field label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+  .res-modal .field input, .res-modal .field select, .res-modal .field textarea { background:#111; border:1px solid rgba(255,255,255,0.12); color:var(--white); font-family:'Montserrat',sans-serif; font-size:14px; font-weight:300; padding:11px 12px; outline:none; -webkit-appearance:none; }
+  .res-modal .field input:focus, .res-modal .field select:focus { border-color:rgba(192,57,43,0.6); }
+  .res-modal .field select option { background:#1a1a1a; }
+  .res-modal .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .res-modal .modal-btns { display:flex; gap:8px; margin-top:16px; }
+  .res-modal .modal-btns button { flex:1; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:13px; border:none; cursor:pointer; }
+  .res-modal .btn-cancel { background:transparent; border:1px solid rgba(255,255,255,0.12)!important; color:var(--muted); }
+  .res-modal .btn-save { background:var(--red); color:var(--white); }
+  .res-modal .btn-delete { width:100%; margin-top:8px; padding:12px; background:transparent; border:1px solid rgba(192,57,43,0.3); color:rgba(255,90,71,0.6); font-family:'Montserrat',sans-serif; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer; }
+  .res-modal .btn-delete:hover { border-color:var(--red-light); color:var(--red-light); }
+  .res-modal .preview-box { background:#111; border-left:2px solid var(--border); padding:12px 14px; margin:10px 0; font-size:12px; color:var(--muted); line-height:1.7; white-space:pre-wrap; }
+</style>
+
+<div id="tab-reservations" class="tab-panel">
+  <div class="res-summary">
+    <div class="sum-card primary"><div class="sum-label">Upcoming</div><div class="sum-value" id="res-upcoming">0</div></div>
+    <div class="sum-card"><div class="sum-label">Today</div><div class="sum-value" id="res-today">0</div></div>
+    <div class="sum-card"><div class="sum-label">Confirmations Due</div><div class="sum-value" id="res-conf-due" style="">0</div></div>
+  </div>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+    <button class="btn btn-primary" onclick="resOpenAdd()" style="font-size:11px;">+ New Reservation</button>
+  </div>
+  <div class="res-list" id="res-list"></div>
 </div>
 
-<div class="modal-bg" id="modalBg" style="display:none;" onclick="handleModalBgClick(event)">
-  <div class="modal" id="modalContent"></div>
+<div class="res-modal-bg" id="res-modal-bg" style="display:none;" onclick="resHandleBgClick(event)">
+  <div class="res-modal" id="res-modal"></div>
 </div>
 
 <script>
-const TYPES = ['Prospect','Corporate','Hotel/Concierge'];
-const HEATS = ['Hot','Warm','Cold'];
-const AVG_FARE = 185;
-const STORAGE_KEY = 'odom_crm_contacts';
-const ID_KEY = 'odom_crm_nextid';
+(function(){
+  const RES_KEY = 'rr-reservations';
+  const RES_ID_KEY = 'rr-res-nextid';
+  const MY_NUMBER = '9545550000'; // placeholder — user updates in settings
 
-function loadContacts() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) return JSON.parse(saved);
-  } catch(e) {}
-  return [
-    {
-      id:1, name:'Marcus Webb', title:'VP Operations', company:'Webb Capital',
-      type:'Corporate', heat:'Hot',
-      phone:'954-555-0182', email:'marcus@webbcapital.com',
-      notes:[{date:'Mar 27',text:'Weekly SFO run. Prefers silence. Tip well.'}],
-      followUp:'2026-04-01', lastContact:'2026-03-27',
-      rides:12, avgFare:210, frequency:1,
-      prevRide:{date:'Mar 22',route:'FLL → MIA',amount:195},
-      nextRide:{date:'Apr 3',route:'FLL → MIA',amount:195}
-    },
-    {
-      id:2, name:'Diane Roth', title:'Concierge Manager', company:'The Dalmar Hotel',
-      type:'Hotel/Concierge', heat:'Warm',
-      phone:'954-555-0341', email:'droth@dalmar.com',
-      notes:[{date:'Mar 25',text:'Intro at hotel. Handles 3-4 exec transfers/week. Wants rate card.'}],
-      followUp:'2026-03-30', lastContact:'2026-03-25',
-      rides:0, avgFare:0, frequency:0, prevRide:null, nextRide:null
-    },
-    {
-      id:3, name:'James Okoro', title:null, company:null,
-      type:'Prospect', heat:'Hot',
-      phone:'561-555-0764', email:'',
-      notes:[{date:'Mar 28',text:'Met on Uber Black PBI→FLL. CEO. Wants direct number.'}],
-      followUp:'2026-03-29', lastContact:'2026-03-28',
-      rides:1, avgFare:175, frequency:0,
-      prevRide:{date:'Mar 28',route:'PBI → FLL',amount:175},
-      nextRide:null
-    },
-    {
-      id:4, name:'Sandra Lin', title:'CFO', company:'Tidewater Group',
-      type:'Corporate', heat:'Warm',
-      phone:'305-555-0293', email:'slin@tidewater.com',
-      notes:[], followUp:null, lastContact:'2026-03-10',
-      rides:4, avgFare:195, frequency:2,
-      prevRide:{date:'Mar 10',route:'Boca → FLL',amount:195},
-      nextRide:{date:'Apr 7',route:'Boca → FLL',amount:195}
-    }
-  ];
-}
+  function resLoad(){
+    try{ const s=localStorage.getItem(RES_KEY); if(s) return JSON.parse(s); }catch(e){}
+    return [];
+  }
 
-function loadNextId() {
-  try { return parseInt(localStorage.getItem(ID_KEY)||'5'); } catch(e) { return 5; }
-}
+  window.resData = resLoad();
+  window.resNextId = (function(){ try{ return parseInt(localStorage.getItem(RES_ID_KEY)||'1'); }catch(e){return 1;} })();
 
-let contacts = loadContacts();
-let nextId = loadNextId();
-let filter = 'All';
-let expanded = null;
+  function resSave(){
+    try{ localStorage.setItem(RES_KEY, JSON.stringify(window.resData)); localStorage.setItem(RES_ID_KEY, String(window.resNextId)); }catch(e){}
+  }
 
-function save() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
-    localStorage.setItem(ID_KEY, String(nextId));
-  } catch(e) {}
-}
+  function resToday(){ return new Date().toISOString().slice(0,10); }
 
-function exportJSON() {
-  const blob = new Blob([JSON.stringify(contacts, null, 2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'odom-crm-backup.json'; a.click();
-  URL.revokeObjectURL(url);
-}
+  function resStatus(r){
+    const now = new Date();
+    const ride = new Date(r.date + 'T' + r.time);
+    const diffH = (ride - now) / 36e5;
+    if(r.completed) return 'done';
+    if(diffH < 0) return 'overdue';
+    if(diffH <= 24) return 'today';
+    return 'upcoming';
+  }
 
-function importJSON() {
-  const input = document.createElement('input');
-  input.type = 'file'; input.accept = '.json';
-  input.onchange = e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
-      try {
-        const data = JSON.parse(ev.target.result);
-        if (Array.isArray(data)) {
-          contacts = data;
-          nextId = Math.max(...data.map(c=>c.id), 0) + 1;
-          save(); render();
-          alert('Contacts imported successfully.');
-        }
-      } catch(err) { alert('Invalid file.'); }
+  function resStatusLabel(s){
+    return {done:'Completed', overdue:'Past', today:'Today / Soon', upcoming:'Upcoming'}[s]||'';
+  }
+
+  function resFmtDateTime(date, time){
+    const d = new Date(date + 'T12:00:00');
+    const dateStr = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+    const [h,m] = time.split(':').map(Number);
+    const ampm = h>=12?'PM':'AM';
+    const h12 = h%12||12;
+    return dateStr + ' · ' + h12 + ':' + String(m).padStart(2,'0') + ' ' + ampm;
+  }
+
+  function confDue(r){
+    if(r.completed || r.confirmSent) return false;
+    const ride = new Date(r.date + 'T' + r.time);
+    const diffH = (ride - new Date()) / 36e5;
+    return diffH > 0 && diffH <= 24;
+  }
+
+  function buildSMSBody(r){
+    const dt = resFmtDateTime(r.date, r.time);
+    const flight = r.airline && r.flightNum ? `\nFlight: ${r.airline}${r.flightNum}` : '';
+    return `Hi ${r.clientName}, confirming your Rumor Rides pickup:\n\nDate/Time: ${dt}\nPickup: ${r.pickup}\nDrop-off: ${r.dropoff}${flight}\nAmount: $${r.amount}\n\nQuestions? Reply or call/text ${r.myNumber||MY_NUMBER}.\n\n— Riaz, Rumor Rides`;
+  }
+
+  function buildGCalLink(r){
+    const start = r.date.replace(/-/g,'') + 'T' + r.time.replace(':','') + '00';
+    // +1 hour for end
+    const [h,m] = r.time.split(':').map(Number);
+    const endH = String(h+1).padStart(2,'0');
+    const end = r.date.replace(/-/g,'') + 'T' + endH + String(m).padStart(2,'0') + '00';
+    const title = encodeURIComponent(`Rumor Rides — ${r.clientName}`);
+    const details = encodeURIComponent(`Pickup: ${r.pickup}\nDrop-off: ${r.dropoff}\nAmount: $${r.amount}${r.airline&&r.flightNum?'\nFlight: '+r.airline+r.flightNum:''}`);
+    const loc = encodeURIComponent(r.pickup);
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${loc}`;
+  }
+
+  window.resRender = function(){
+    const data = window.resData;
+    const sorted = [...data].sort((a,b)=> new Date(a.date+'T'+a.time) - new Date(b.date+'T'+b.time));
+    const active = sorted.filter(r=> !r.completed);
+    const upcoming = active.filter(r=>resStatus(r)==='upcoming').length;
+    const today = active.filter(r=>resStatus(r)==='today').length;
+    const confDue_ = active.filter(r=>confDue(r)).length;
+
+    const uEl=document.getElementById('res-upcoming');
+    const tEl=document.getElementById('res-today');
+    const cEl=document.getElementById('res-conf-due');
+    if(uEl) uEl.textContent=upcoming;
+    if(tEl) tEl.textContent=today;
+    if(cEl){ cEl.textContent=confDue_; cEl.style.color=confDue_>0?'var(--red-light)':''; }
+
+    const listEl=document.getElementById('res-list');
+    if(!listEl) return;
+
+    const display = sorted.filter(r=> !r.completed || resStatus(r)==='overdue');
+    const completed = sorted.filter(r=> r.completed);
+    const all = [...display, ...completed];
+
+    if(!all.length){ listEl.innerHTML='<div class="res-empty">No reservations yet</div>'; return; }
+
+    listEl.innerHTML = all.map(r=>{
+      const status = resStatus(r);
+      const label = resStatusLabel(status);
+      const dt = resFmtDateTime(r.date, r.time);
+      const cd = confDue(r);
+      return `<div class="res-card ${status}">
+        <div class="rc-top">
+          <div>
+            <div class="rc-client">${r.clientName}</div>
+            <div class="rc-datetime">${dt}</div>
+          </div>
+          <div class="rc-right">
+            <div class="rc-status s-${status}">${label}</div>
+            <div class="rc-amount">$${r.amount}</div>
+          </div>
+        </div>
+        <div class="rc-route">${r.pickup} → ${r.dropoff}</div>
+        ${r.airline&&r.flightNum?`<div class="rc-flight"><a href="https://flightaware.com/live/flight/${r.airline}${r.flightNum}" target="_blank" style="color:var(--red-light);text-decoration:none;font-size:10px;letter-spacing:0.1em;">${r.airline}${r.flightNum} — Track on FlightAware ↗</a></div>`:''}
+        ${r.confirmSent?`<div class="rc-confirm-sent">✓ Confirmation sent</div>`:''}
+        ${cd?`<div style="font-size:10px;color:var(--yellow);margin-top:6px;letter-spacing:0.08em;">⚠ Confirmation due — ride within 24h</div>`:''}
+        <div class="rc-actions">
+          ${!r.completed?`
+            ${r.clientPhone?`<div class="ra-btn primary" onclick="resSendConfirm(${r.id})">Send Confirm</div>`:''}
+            <div class="ra-btn" onclick="resAddToCalendar(${r.id})">Calendar</div>
+            <div class="ra-btn green" onclick="resMarkDone(${r.id})">Done</div>
+          `:''}
+          <div class="ra-btn" onclick="resOpenEdit(${r.id})">Edit</div>
+          <div class="ra-btn" onclick="resDelete(${r.id})">Delete</div>
+        </div>
+      </div>`;
+    }).join('');
+  };
+
+  window.resSendConfirm = function(id){
+    const r = window.resData.find(x=>x.id===id);
+    if(!r||!r.clientPhone) return;
+    const body = buildSMSBody(r);
+    const encoded = encodeURIComponent(body);
+    const phone = r.clientPhone.replace(/\D/g,'');
+    window.location.href = `sms:${phone}?body=${encoded}`;
+    // mark sent
+    r.confirmSent = true;
+    resSave(); resRender();
+  };
+
+  window.resAddToCalendar = function(id){
+    const r = window.resData.find(x=>x.id===id);
+    if(!r) return;
+    window.open(buildGCalLink(r), '_blank');
+  };
+
+  window.resMarkDone = function(id){
+    const r = window.resData.find(x=>x.id===id);
+    if(!r) return;
+    r.completed = true;
+    resSave(); resRender();
+  };
+
+  window.resDelete = function(id){
+    if(!confirm('Delete this reservation?')) return;
+    window.resData = window.resData.filter(x=>x.id!==id);
+    resSave(); resRender();
+  };
+
+  function resShowModal(html){ document.getElementById('res-modal').innerHTML=html; document.getElementById('res-modal-bg').style.display='flex'; }
+  window.resCloseModal = function(){ document.getElementById('res-modal-bg').style.display='none'; resRender(); };
+  window.resHandleBgClick = function(e){ if(e.target===document.getElementById('res-modal-bg')) resCloseModal(); };
+
+  window.resOpenAdd = function(){
+    resShowModal(`<h3>New Reservation</h3>
+      <div class="field"><label>Client Name *</label><input id="rf-client" placeholder="Full name" autocomplete="off" /></div>
+      <div class="form-grid">
+        <div class="field"><label>Client Phone</label><input id="rf-phone" type="tel" placeholder="(954) 555-0000" /></div>
+        <div class="field"><label>Amount ($)</label><input id="rf-amount" type="number" placeholder="0" /></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Ride Date</label><input id="rf-date" type="date" value="${resToday()}" /></div>
+        <div class="field"><label>Pickup Time</label><input id="rf-time" type="time" /></div>
+      </div>
+      <div class="field"><label>Pickup Location</label><input id="rf-pickup" placeholder="e.g. 100 SE 3rd Ave, Fort Lauderdale" /></div>
+      <div class="field"><label>Drop-off Location</label><input id="rf-dropoff" placeholder="e.g. FLL Terminal 3" /></div>
+      <div class="form-grid">
+        <div class="field"><label>Airline (optional)</label><input id="rf-airline" placeholder="AA, DL, UA" oninput="this.value=this.value.toUpperCase();resUpdatePreview()" /></div>
+        <div class="field"><label>Flight # (optional)</label><input id="rf-flightnum" placeholder="1234" oninput="resUpdatePreview()" /></div>
+      </div>
+      <div class="field"><label>Your Contact # (for text)</label><input id="rf-mynum" type="tel" placeholder="(954) 555-0000" value="" /></div>
+      <div class="field"><label>Notes</label><input id="rf-notes" placeholder="optional" /></div>
+      <div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin:14px 0 8px;">Confirmation Text Preview</div>
+      <div class="preview-box" id="rf-preview">Fill in details above to preview confirmation text.</div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="resCloseModal()">Cancel</button>
+        <button class="btn-save" onclick="resSaveAdd()">Save Reservation</button>
+      </div>`);
+    ['rf-client','rf-phone','rf-amount','rf-date','rf-time','rf-pickup','rf-dropoff','rf-mynum'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.addEventListener('input', resUpdatePreview);
+    });
+  };
+
+  window.resUpdatePreview = function(){
+    const preview = document.getElementById('rf-preview');
+    if(!preview) return;
+    const clientName = (document.getElementById('rf-client')||{value:''}).value.trim()||'[Client]';
+    const date = (document.getElementById('rf-date')||{value:''}).value;
+    const time = (document.getElementById('rf-time')||{value:''}).value;
+    const pickup = (document.getElementById('rf-pickup')||{value:''}).value.trim()||'[Pickup]';
+    const dropoff = (document.getElementById('rf-dropoff')||{value:''}).value.trim()||'[Drop-off]';
+    const amount = (document.getElementById('rf-amount')||{value:''}).value||'0';
+    const airline = ((document.getElementById('rf-airline')||{value:''}).value||'').toUpperCase();
+    const flightNum = (document.getElementById('rf-flightnum')||{value:''}).value||'';
+    const myNum = (document.getElementById('rf-mynum')||{value:''}).value.trim()||MY_NUMBER;
+    const dt = date&&time ? resFmtDateTime(date,time) : '[Date/Time]';
+    const flight = airline&&flightNum ? `\nFlight: ${airline}${flightNum}` : '';
+    preview.textContent = `Hi ${clientName}, confirming your Rumor Rides pickup:\n\nDate/Time: ${dt}\nPickup: ${pickup}\nDrop-off: ${dropoff}${flight}\nAmount: $${amount}\n\nQuestions? Reply or call/text ${myNum}.\n\n— Riaz, Rumor Rides`;
+  };
+
+  window.resSaveAdd = function(){
+    const clientName = document.getElementById('rf-client').value.trim();
+    if(!clientName){alert('Client name is required.');return;}
+    window.resData.unshift({
+      id: window.resNextId++,
+      clientName,
+      clientPhone: document.getElementById('rf-phone').value.trim(),
+      amount: parseFloat(document.getElementById('rf-amount').value)||0,
+      date: document.getElementById('rf-date').value,
+      time: document.getElementById('rf-time').value||'00:00',
+      pickup: document.getElementById('rf-pickup').value.trim(),
+      dropoff: document.getElementById('rf-dropoff').value.trim(),
+      airline: document.getElementById('rf-airline').value.trim().toUpperCase(),
+      flightNum: document.getElementById('rf-flightnum').value.trim(),
+      myNumber: document.getElementById('rf-mynum').value.trim(),
+      notes: document.getElementById('rf-notes').value.trim(),
+      confirmSent: false,
+      completed: false
+    });
+    resSave(); resCloseModal();
+  };
+
+  window.resOpenEdit = function(id){
+    const r = window.resData.find(x=>x.id===id);
+    resShowModal(`<h3>Edit Reservation</h3>
+      <div class="field"><label>Client Name</label><input id="rf-client" value="${r.clientName}" /></div>
+      <div class="form-grid">
+        <div class="field"><label>Client Phone</label><input id="rf-phone" value="${r.clientPhone||''}" /></div>
+        <div class="field"><label>Amount ($)</label><input id="rf-amount" type="number" value="${r.amount||0}" /></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Ride Date</label><input id="rf-date" type="date" value="${r.date}" /></div>
+        <div class="field"><label>Pickup Time</label><input id="rf-time" type="time" value="${r.time}" /></div>
+      </div>
+      <div class="field"><label>Pickup Location</label><input id="rf-pickup" value="${r.pickup||''}" /></div>
+      <div class="field"><label>Drop-off Location</label><input id="rf-dropoff" value="${r.dropoff||''}" /></div>
+      <div class="form-grid">
+        <div class="field"><label>Airline</label><input id="rf-airline" value="${r.airline||''}" oninput="this.value=this.value.toUpperCase()" /></div>
+        <div class="field"><label>Flight #</label><input id="rf-flightnum" value="${r.flightNum||''}" /></div>
+      </div>
+      <div class="field"><label>Your Contact #</label><input id="rf-mynum" value="${r.myNumber||''}" placeholder="(954) 555-0000" /></div>
+      <div class="field"><label>Notes</label><input id="rf-notes" value="${r.notes||''}" /></div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="resCloseModal()">Cancel</button>
+        <button class="btn-save" onclick="resSaveEdit(${id})">Save</button>
+      </div>
+      <button class="btn-delete" onclick="resDelete(${id});resCloseModal()">Delete Reservation</button>`);
+  };
+
+  window.resSaveEdit = function(id){
+    const r = window.resData.find(x=>x.id===id);
+    r.clientName = document.getElementById('rf-client').value.trim()||r.clientName;
+    r.clientPhone = document.getElementById('rf-phone').value.trim();
+    r.amount = parseFloat(document.getElementById('rf-amount').value)||0;
+    r.date = document.getElementById('rf-date').value;
+    r.time = document.getElementById('rf-time').value||'00:00';
+    r.pickup = document.getElementById('rf-pickup').value.trim();
+    r.dropoff = document.getElementById('rf-dropoff').value.trim();
+    r.airline = document.getElementById('rf-airline').value.trim().toUpperCase();
+    r.flightNum = document.getElementById('rf-flightnum').value.trim();
+    r.myNumber = document.getElementById('rf-mynum').value.trim();
+    r.notes = document.getElementById('rf-notes').value.trim();
+    resSave(); resCloseModal();
+  };
+
+  // Init on tab activation
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      if(this.dataset.tab==='reservations') setTimeout(resRender, 50);
+    });
+  });
+
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') resCloseModal(); });
+
+})();
+</script>
+
+
+<!-- ===== CRM TAB ===== -->
+<style>
+  /* CRM-specific styles scoped to tab */
+  #tab-crm .crm-top { display:flex; gap:8px; margin-bottom:12px; }
+  #tab-crm .crm-search { flex:1; background:#111; border:1px solid rgba(255,255,255,0.12); color:var(--white); font-family:'Montserrat',sans-serif; font-size:14px; font-weight:300; padding:11px 12px; outline:none; }
+  #tab-crm .crm-search:focus { border-color:rgba(192,57,43,0.6); }
+  #tab-crm .crm-filters { display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
+  #tab-crm .cf-btn { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; padding:7px 14px; background:transparent; border:1px solid rgba(255,255,255,0.12); color:var(--muted); cursor:pointer; font-family:'Montserrat',sans-serif; transition:all 0.2s; }
+  #tab-crm .cf-btn.active { border-color:var(--red); color:var(--red-light); }
+  #tab-crm .contact-list { display:flex; flex-direction:column; gap:8px; }
+  #tab-crm .cc { background:var(--card); border-left:2px solid var(--border); padding:14px 16px; cursor:pointer; transition:border-color 0.2s; }
+  #tab-crm .cc:hover { border-left-color:var(--red-light); }
+  #tab-crm .cc-top { display:flex; align-items:center; gap:10px; }
+  #tab-crm .cc-avatar { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:500; flex-shrink:0; font-family:'Montserrat',sans-serif; }
+  #tab-crm .av-corp { background:rgba(56,130,220,0.18); color:#5ba3f5; }
+  #tab-crm .av-prospect { background:rgba(140,100,220,0.18); color:#b48ef5; }
+  #tab-crm .av-hotel { background:rgba(93,204,142,0.18); color:var(--green); }
+  #tab-crm .cc-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:400; color:var(--white); }
+  #tab-crm .cc-sub { font-size:11px; color:var(--muted); margin-top:2px; letter-spacing:0.06em; }
+  #tab-crm .cc-right { margin-left:auto; display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
+  #tab-crm .heat-badge { font-size:9px; letter-spacing:0.1em; text-transform:uppercase; padding:3px 8px; font-family:'Montserrat',sans-serif; }
+  #tab-crm .heat-hot { background:rgba(255,90,71,0.18); color:var(--red-light); }
+  #tab-crm .heat-warm { background:rgba(245,200,66,0.18); color:var(--yellow); }
+  #tab-crm .heat-cold { background:rgba(100,100,100,0.15); color:#777; }
+  #tab-crm .follow-tag { font-size:10px; color:var(--muted); letter-spacing:0.06em; }
+  #tab-crm .follow-tag.due { color:var(--red-light); }
+  #tab-crm .cc-meta { display:flex; gap:16px; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06); flex-wrap:wrap; }
+  #tab-crm .meta-item { font-size:11px; color:var(--muted); letter-spacing:0.04em; }
+  #tab-crm .meta-item b { color:var(--white); font-weight:400; font-family:'Cormorant Garamond',serif; font-size:15px; }
+  #tab-crm .meta-item.stale { color:var(--red-light); }
+  #tab-crm .meta-item.stale b { color:var(--red-light); }
+  #tab-crm .cc-rides { display:flex; gap:8px; margin-top:10px; }
+  #tab-crm .ride-cell { flex:1; background:#111; padding:10px 12px; }
+  #tab-crm .ride-dir { font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+  #tab-crm .ride-date { font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--white); }
+  #tab-crm .ride-amt { font-size:11px; color:var(--muted); margin-top:2px; }
+  #tab-crm .ride-none { font-size:11px; color:#444; font-style:italic; }
+  #tab-crm .cc-proj { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; }
+  #tab-crm .proj-cell { background:#111; padding:10px 12px; }
+  #tab-crm .proj-label { font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+  #tab-crm .proj-val { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--green); }
+  #tab-crm .cc-last-note { font-size:12px; color:var(--muted); margin-top:10px; font-style:italic; line-height:1.5; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px; }
+  #tab-crm .cc-actions { display:flex; gap:6px; margin-top:10px; }
+  #tab-crm .ca-btn { flex:1; font-family:'Montserrat',sans-serif; font-size:10px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; padding:10px 6px; border:1px solid rgba(255,255,255,0.12); background:transparent; color:var(--muted); cursor:pointer; transition:all 0.2s; text-align:center; }
+  #tab-crm .ca-btn:hover { border-color:rgba(255,255,255,0.3); color:var(--white); }
+  #tab-crm .ca-btn.primary { background:var(--red); border-color:var(--red); color:var(--white); }
+  #tab-crm .ca-btn.primary:hover { opacity:0.85; }
+  #tab-crm .crm-empty { text-align:center; padding:28px; color:var(--muted); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; }
+
+  /* CRM Modal */
+  .crm-modal-bg { position:fixed; inset:0; background:rgba(0,0,0,0.75); display:flex; align-items:flex-end; justify-content:center; z-index:200; }
+  @media(min-width:500px){ .crm-modal-bg { align-items:center; } }
+  .crm-modal { background:var(--card); width:100%; max-width:480px; padding:22px 18px 32px; max-height:90vh; overflow-y:auto; border-top:2px solid var(--red); }
+  @media(min-width:500px){ .crm-modal { border:1px solid rgba(192,57,43,0.4); border-top:2px solid var(--red); } }
+  .crm-modal h3 { font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:18px; }
+  .crm-modal .field { display:flex; flex-direction:column; margin-bottom:12px; }
+  .crm-modal .field label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+  .crm-modal .field input, .crm-modal .field select, .crm-modal .field textarea {
+    background:#111; border:1px solid rgba(255,255,255,0.12); color:var(--white);
+    font-family:'Montserrat',sans-serif; font-size:14px; font-weight:300;
+    padding:11px 12px; outline:none; -webkit-appearance:none;
+  }
+  .crm-modal .field input:focus, .crm-modal .field select:focus, .crm-modal .field textarea:focus { border-color:rgba(192,57,43,0.6); }
+  .crm-modal .field textarea { height:72px; resize:none; }
+  .crm-modal .field select option { background:#1a1a1a; }
+  .crm-modal .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .crm-modal .section-div { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); margin:14px 0 10px; padding-bottom:6px; border-bottom:1px solid rgba(255,255,255,0.07); }
+  .crm-modal .modal-btns { display:flex; gap:8px; margin-top:16px; }
+  .crm-modal .modal-btns button { flex:1; font-family:'Montserrat',sans-serif; font-size:11px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; padding:13px; border:none; cursor:pointer; }
+  .crm-modal .btn-cancel { background:transparent; border:1px solid rgba(255,255,255,0.12)!important; color:var(--muted); }
+  .crm-modal .btn-save { background:var(--red); color:var(--white); }
+  .crm-modal .note-history { background:#111; padding:10px 12px; max-height:130px; overflow-y:auto; margin-bottom:12px; }
+  .crm-modal .note-entry { padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:12px; color:var(--muted); line-height:1.5; }
+  .crm-modal .note-entry:last-child { border:none; }
+  .crm-modal .note-date { color:#444; font-size:10px; display:block; margin-bottom:1px; letter-spacing:0.08em; }
+  .crm-modal .btn-delete { width:100%; margin-top:8px; padding:12px; background:transparent; border:1px solid rgba(192,57,43,0.3); color:rgba(255,90,71,0.6); font-family:'Montserrat',sans-serif; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer; }
+  .crm-modal .btn-delete:hover { border-color:var(--red-light); color:var(--red-light); }
+</style>
+
+<div id="tab-crm" class="tab-panel">
+  <div class="summary">
+    <div class="sum-card primary"><div class="sum-label">Monthly Projected</div><div class="sum-value" id="crm-monthly">$0</div></div>
+    <div class="sum-card"><div class="sum-label">Hot Leads</div><div class="sum-value" id="crm-hot">0</div></div>
+    <div class="sum-card"><div class="sum-label">Follow-ups Due</div><div class="sum-value" id="crm-due" style="">0</div></div>
+    <div class="sum-card"><div class="sum-label">Total Contacts</div><div class="sum-value" id="crm-total">0</div></div>
+  </div>
+  <div class="crm-top">
+    <input class="crm-search" type="text" id="crm-search" placeholder="Search contacts..." oninput="crmRender()" autocomplete="off" />
+    <button class="btn btn-primary" onclick="crmOpenAdd()" style="white-space:nowrap;">+ Add</button>
+  </div>
+  <div class="crm-filters" id="crm-filters"></div>
+  <div class="contact-list" id="crm-list"></div>
+  <div style="display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);">
+    <button class="btn btn-ghost" style="font-size:10px;padding:8px 14px;" onclick="crmExport()">Export CRM</button>
+    <label class="btn btn-ghost" style="font-size:10px;padding:8px 14px;cursor:pointer;">Import CRM<input type="file" accept=".json" style="display:none;" onchange="crmImport(event)"></label>
+  </div>
+</div>
+
+<div class="crm-modal-bg" id="crm-modal-bg" style="display:none;" onclick="crmHandleBgClick(event)">
+  <div class="crm-modal" id="crm-modal"></div>
+</div>
+
+<script>
+(function() {
+  const CRM_KEY = 'rr-crm-contacts';
+  const CRM_ID_KEY = 'rr-crm-nextid';
+  const CRM_TYPES = ['Prospect','Corporate','Hotel/Concierge'];
+  const CRM_HEATS = ['Hot','Warm','Cold'];
+  const CRM_AVG = 185;
+
+  function crmLoad() {
+    try { const s=localStorage.getItem(CRM_KEY); if(s) return JSON.parse(s); } catch(e){}
+    return [
+      {id:1,name:'Marcus Webb',title:'VP Operations',company:'Webb Capital',type:'Corporate',heat:'Hot',phone:'954-555-0182',email:'marcus@webbcapital.com',notes:[{date:'Mar 27',text:'Weekly run. Prefers silence. Excellent tipper.'}],followUp:'2026-04-01',lastContact:'2026-03-27',rides:12,avgFare:210,frequency:1,prevRide:{date:'Mar 22',route:'FLL → MIA',amount:195},nextRide:{date:'Apr 3',route:'FLL → MIA',amount:195}},
+      {id:2,name:'Diane Roth',title:'Concierge Manager',company:'The Dalmar Hotel',type:'Hotel/Concierge',heat:'Warm',phone:'954-555-0341',email:'droth@dalmar.com',notes:[{date:'Mar 25',text:'Intro at hotel. Handles 3-4 exec transfers/week. Wants rate card.'}],followUp:'2026-03-30',lastContact:'2026-03-25',rides:0,avgFare:0,frequency:0,prevRide:null,nextRide:null},
+      {id:3,name:'James Okoro',title:null,company:null,type:'Prospect',heat:'Hot',phone:'561-555-0764',email:'',notes:[{date:'Mar 28',text:'Met on Uber Black PBI→FLL. CEO. Wants direct number.'}],followUp:'2026-03-29',lastContact:'2026-03-28',rides:1,avgFare:175,frequency:0,prevRide:{date:'Mar 28',route:'PBI → FLL',amount:175},nextRide:null},
+      {id:4,name:'Sandra Lin',title:'CFO',company:'Tidewater Group',type:'Corporate',heat:'Warm',phone:'305-555-0293',email:'slin@tidewater.com',notes:[],followUp:null,lastContact:'2026-03-10',rides:4,avgFare:195,frequency:2,prevRide:{date:'Mar 10',route:'Boca → FLL',amount:195},nextRide:{date:'Apr 7',route:'Boca → FLL',amount:195}}
+    ];
+  }
+
+  window.crmContacts = crmLoad();
+  window.crmNextId = (function(){ try{ return parseInt(localStorage.getItem(CRM_ID_KEY)||'5'); }catch(e){return 5;} })();
+  window.crmFilter = 'All';
+  window.crmExpanded = null;
+
+  function crmSave() {
+    try{ localStorage.setItem(CRM_KEY, JSON.stringify(window.crmContacts)); localStorage.setItem(CRM_ID_KEY, String(window.crmNextId)); }catch(e){}
+  }
+
+  function crmInitials(n){ return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
+  function crmAvClass(t){ return t==='Corporate'?'av-corp':t==='Hotel/Concierge'?'av-hotel':'av-prospect'; }
+  function crmHeatClass(h){ return h==='Hot'?'heat-hot':h==='Warm'?'heat-warm':'heat-cold'; }
+  function crmOverdue(d){ return d && new Date(d)<=new Date(); }
+  function crmFmtDate(d){ if(!d)return null; return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+  function crmToday(){ return new Date().toISOString().slice(0,10); }
+  function crmTodayLabel(){ return new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+  function crmDaysSince(d){
+    if(!d)return null;
+    const diff=Math.floor((new Date()-new Date(d))/(1000*60*60*24));
+    if(diff<=0)return 'Today'; if(diff===1)return '1 day ago'; return diff+' days ago';
+  }
+  function crmStale(d){ if(!d)return true; return Math.floor((new Date()-new Date(d))/(1000*60*60*24))>14; }
+  function crmMonthly(c){ if(!c.frequency||!c.avgFare)return 0; return Math.round(c.frequency*c.avgFare*4); }
+  function crmAnnual(c){ return crmMonthly(c)*12; }
+  function crmLifetime(c){ return Math.round((c.rides||0)*(c.avgFare||CRM_AVG)); }
+
+  window.crmRender = function() {
+    const q = (document.getElementById('crm-search')||{value:''}).value.toLowerCase();
+    const all = window.crmContacts;
+    const filtered = all.filter(c=>{
+      const mf = window.crmFilter==='All'||c.type===window.crmFilter||(window.crmFilter==='Hot'&&c.heat==='Hot');
+      const ms = !q||c.name.toLowerCase().includes(q)||(c.company||'').toLowerCase().includes(q);
+      return mf&&ms;
+    });
+
+    const totalMonthly = all.reduce((s,c)=>s+crmMonthly(c),0);
+    const hot = all.filter(c=>c.heat==='Hot').length;
+    const due = all.filter(c=>crmOverdue(c.followUp)).length;
+
+    const mEl=document.getElementById('crm-monthly');
+    const hEl=document.getElementById('crm-hot');
+    const dEl=document.getElementById('crm-due');
+    const tEl=document.getElementById('crm-total');
+    if(mEl) mEl.textContent='$'+totalMonthly.toLocaleString();
+    if(hEl) hEl.textContent=hot;
+    if(dEl){ dEl.textContent=due; dEl.style.color=due>0?'var(--red-light)':''; }
+    if(tEl) tEl.textContent=all.length;
+
+    const pills=['All','Hot','Prospect','Corporate','Hotel/Concierge'];
+    const fEl=document.getElementById('crm-filters');
+    if(fEl) fEl.innerHTML=pills.map(p=>`<button class="cf-btn ${window.crmFilter===p?'active':''}" onclick="crmSetFilter('${p}')">${p}</button>`).join('');
+
+    const listEl=document.getElementById('crm-list');
+    if(!listEl)return;
+    if(!filtered.length){ listEl.innerHTML='<div class="crm-empty">No contacts found</div>'; return; }
+
+    listEl.innerHTML=filtered.map(c=>{
+      const isExp=window.crmExpanded===c.id;
+      const fu=crmFmtDate(c.followUp);
+      const overdue=crmOverdue(c.followUp);
+      const since=crmDaysSince(c.lastContact);
+      const stale=crmStale(c.lastContact)&&c.rides>0;
+      const mp=crmMonthly(c), ap=crmAnnual(c), lv=crmLifetime(c);
+      return `<div class="cc" onclick="crmToggle(${c.id})">
+        <div class="cc-top">
+          <div class="cc-avatar ${crmAvClass(c.type)}">${crmInitials(c.name)}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="cc-name">${c.name}</div>
+            <div class="cc-sub">${c.title?c.title+' · ':''}${c.company||c.type}</div>
+          </div>
+          <div class="cc-right">
+            <span class="heat-badge ${crmHeatClass(c.heat)}">${c.heat}</span>
+            ${fu?`<span class="follow-tag ${overdue?'due':''}">${overdue?'Due ':''}${fu}</span>`:''}
+          </div>
+        </div>
+        <div class="cc-meta">
+          <div class="meta-item ${stale?'stale':''}">Last contact <b>${since||'Never'}</b></div>
+          ${c.rides?`<div class="meta-item">Rides <b>${c.rides}</b></div>`:''}
+          ${lv?`<div class="meta-item">Lifetime <b>$${lv.toLocaleString()}</b></div>`:''}
+        </div>
+        ${isExp?`
+          ${(c.prevRide||c.nextRide)?`<div class="cc-rides" onclick="event.stopPropagation()">
+            <div class="ride-cell"><div class="ride-dir">Previous ride</div>${c.prevRide?`<div class="ride-date">${c.prevRide.date}</div><div class="ride-amt">${c.prevRide.route} · $${c.prevRide.amount}</div>`:`<div class="ride-none">None logged</div>`}</div>
+            <div class="ride-cell"><div class="ride-dir">Next ride</div>${c.nextRide?`<div class="ride-date">${c.nextRide.date}</div><div class="ride-amt">${c.nextRide.route} · $${c.nextRide.amount}</div>`:`<div class="ride-none">Not scheduled</div>`}</div>
+          </div>`:''}
+          ${mp||ap?`<div class="cc-proj" onclick="event.stopPropagation()">
+            <div class="proj-cell"><div class="proj-label">Monthly proj.</div><div class="proj-val">$${mp.toLocaleString()}</div></div>
+            <div class="proj-cell"><div class="proj-label">Annual proj.</div><div class="proj-val">$${ap.toLocaleString()}</div></div>
+            <div class="proj-cell"><div class="proj-label">Lifetime value</div><div class="proj-val">$${lv.toLocaleString()}</div></div>
+          </div>`:''}
+          ${c.notes.length?`<div class="cc-last-note" onclick="event.stopPropagation()">"${c.notes[c.notes.length-1].text}"</div>`:''}
+          <div class="cc-actions" onclick="event.stopPropagation()">
+            <div class="ca-btn primary" onclick="crmText(${c.id})">Text</div>
+            <div class="ca-btn primary" onclick="crmEmail(${c.id})">Email</div>
+            <div class="ca-btn" onclick="crmOpenNote(${c.id})">Note</div>
+            <div class="ca-btn" onclick="crmOpenRide(${c.id})">Ride</div>
+            <div class="ca-btn" onclick="crmOpenEdit(${c.id})">Edit</div>
+          </div>
+        `:''}
+      </div>`;
+    }).join('');
+  };
+
+  window.crmSetFilter = function(f){ window.crmFilter=f; crmRender(); };
+  window.crmToggle = function(id){ window.crmExpanded=window.crmExpanded===id?null:id; crmRender(); };
+  window.crmText = function(id){ const c=window.crmContacts.find(x=>x.id===id); if(c&&c.phone) window.location.href='sms:'+c.phone.replace(/\D/g,''); };
+  window.crmEmail = function(id){ const c=window.crmContacts.find(x=>x.id===id); if(c&&c.email) window.location.href='mailto:'+c.email; else alert('No email on file.'); };
+
+  function crmShowModal(html){ document.getElementById('crm-modal').innerHTML=html; document.getElementById('crm-modal-bg').style.display='flex'; }
+  window.crmCloseModal = function(){ document.getElementById('crm-modal-bg').style.display='none'; crmRender(); };
+  window.crmHandleBgClick = function(e){ if(e.target===document.getElementById('crm-modal-bg')) crmCloseModal(); };
+
+  window.crmOpenAdd = function(){
+    crmShowModal(`<h3>New Contact</h3>
+      <div class="field"><label>Name *</label><input id="cf-name" placeholder="Full name" autocomplete="off" /></div>
+      <div class="form-grid">
+        <div class="field"><label>Phone</label><input id="cf-phone" type="tel" placeholder="(954) 555-0000" /></div>
+        <div class="field"><label>Email</label><input id="cf-email" type="email" placeholder="optional" /></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Title</label><input id="cf-title" placeholder="optional" /></div>
+        <div class="field"><label>Company</label><input id="cf-company" placeholder="optional" /></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Type</label><select id="cf-type">${CRM_TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div>
+        <div class="field"><label>Heat</label><select id="cf-heat">${CRM_HEATS.map(h=>`<option>${h}</option>`).join('')}</select></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Rides / week</label><input id="cf-freq" type="number" min="0" step="0.5" placeholder="0" /></div>
+        <div class="field"><label>Avg fare ($)</label><input id="cf-avg" type="number" placeholder="${CRM_AVG}" /></div>
+      </div>
+      <div class="field"><label>First note</label><textarea id="cf-note" placeholder="Where you met, what they said..."></textarea></div>
+      <div class="form-grid">
+        <div class="field"><label>Follow-up date</label><input id="cf-follow" type="date" /></div>
+        <div class="field"><label>Last contact</label><input id="cf-last" type="date" value="${crmToday()}" /></div>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="crmCloseModal()">Cancel</button>
+        <button class="btn-save" onclick="crmSaveAdd()">Save Contact</button>
+      </div>`);
+  };
+
+  window.crmSaveAdd = function(){
+    const name=document.getElementById('cf-name').value.trim();
+    if(!name){alert('Name is required.');return;}
+    const note=document.getElementById('cf-note').value.trim();
+    window.crmContacts.unshift({
+      id:window.crmNextId++, name,
+      phone:document.getElementById('cf-phone').value.trim(),
+      email:document.getElementById('cf-email').value.trim(),
+      title:document.getElementById('cf-title').value.trim(),
+      company:document.getElementById('cf-company').value.trim(),
+      type:document.getElementById('cf-type').value,
+      heat:document.getElementById('cf-heat').value,
+      notes:note?[{date:crmTodayLabel(),text:note}]:[],
+      followUp:document.getElementById('cf-follow').value||null,
+      lastContact:document.getElementById('cf-last').value||crmToday(),
+      rides:0, avgFare:parseFloat(document.getElementById('cf-avg').value)||CRM_AVG,
+      frequency:parseFloat(document.getElementById('cf-freq').value)||0,
+      prevRide:null, nextRide:null
+    });
+    crmSave(); crmCloseModal();
+  };
+
+  window.crmOpenEdit = function(id){
+    const c=window.crmContacts.find(x=>x.id===id);
+    crmShowModal(`<h3>Edit Contact</h3>
+      <div class="field"><label>Name</label><input id="cf-name" value="${c.name}" /></div>
+      <div class="form-grid">
+        <div class="field"><label>Phone</label><input id="cf-phone" value="${c.phone||''}" /></div>
+        <div class="field"><label>Email</label><input id="cf-email" value="${c.email||''}" /></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Title</label><input id="cf-title" value="${c.title||''}" /></div>
+        <div class="field"><label>Company</label><input id="cf-company" value="${c.company||''}" /></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Type</label><select id="cf-type">${CRM_TYPES.map(t=>`<option ${c.type===t?'selected':''}>${t}</option>`).join('')}</select></div>
+        <div class="field"><label>Heat</label><select id="cf-heat">${CRM_HEATS.map(h=>`<option ${c.heat===h?'selected':''}>${h}</option>`).join('')}</select></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Rides / week</label><input id="cf-freq" type="number" step="0.5" value="${c.frequency||0}" /></div>
+        <div class="field"><label>Avg fare ($)</label><input id="cf-avg" type="number" value="${c.avgFare||CRM_AVG}" /></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Follow-up date</label><input id="cf-follow" type="date" value="${c.followUp||''}" /></div>
+        <div class="field"><label>Last contact</label><input id="cf-last" type="date" value="${c.lastContact||''}" /></div>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="crmCloseModal()">Cancel</button>
+        <button class="btn-save" onclick="crmSaveEdit(${id})">Save</button>
+      </div>
+      <button class="btn-delete" onclick="crmDelete(${id})">Delete Contact</button>`);
+  };
+
+  window.crmSaveEdit = function(id){
+    const c=window.crmContacts.find(x=>x.id===id);
+    c.name=document.getElementById('cf-name').value.trim()||c.name;
+    c.phone=document.getElementById('cf-phone').value.trim();
+    c.email=document.getElementById('cf-email').value.trim();
+    c.title=document.getElementById('cf-title').value.trim();
+    c.company=document.getElementById('cf-company').value.trim();
+    c.type=document.getElementById('cf-type').value;
+    c.heat=document.getElementById('cf-heat').value;
+    c.frequency=parseFloat(document.getElementById('cf-freq').value)||0;
+    c.avgFare=parseFloat(document.getElementById('cf-avg').value)||CRM_AVG;
+    c.followUp=document.getElementById('cf-follow').value||null;
+    c.lastContact=document.getElementById('cf-last').value||c.lastContact;
+    crmSave(); crmCloseModal();
+  };
+
+  window.crmDelete = function(id){
+    if(!confirm('Delete this contact?')) return;
+    window.crmContacts=window.crmContacts.filter(x=>x.id!==id);
+    window.crmExpanded=null;
+    crmSave(); crmCloseModal();
+  };
+
+  window.crmOpenNote = function(id){
+    const c=window.crmContacts.find(x=>x.id===id);
+    crmShowModal(`<h3>Notes — ${c.name}</h3>
+      ${c.notes.length?`<div class="note-history">${c.notes.map(n=>`<div class="note-entry"><span class="note-date">${n.date}</span>${n.text}</div>`).join('')}</div>`:''}
+      <div class="field"><label>New note</label><textarea id="cf-notetext" placeholder="Add a note..."></textarea></div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="crmCloseModal()">Cancel</button>
+        <button class="btn-save" onclick="crmSaveNote(${id})">Save Note</button>
+      </div>`);
+  };
+
+  window.crmSaveNote = function(id){
+    const c=window.crmContacts.find(x=>x.id===id);
+    const txt=document.getElementById('cf-notetext').value.trim();
+    if(txt){ c.notes.push({date:crmTodayLabel(),text:txt}); c.lastContact=crmToday(); }
+    crmSave(); crmCloseModal();
+  };
+
+  window.crmOpenRide = function(id){
+    const c=window.crmContacts.find(x=>x.id===id);
+    crmShowModal(`<h3>Rides — ${c.name}</h3>
+      <div class="section-div">Previous Ride</div>
+      <div class="field"><label>Date</label><input id="cf-prdate" type="date" /></div>
+      <div class="form-grid">
+        <div class="field"><label>Route</label><input id="cf-prroute" placeholder="FLL → MIA" value="${c.prevRide?c.prevRide.route:''}" /></div>
+        <div class="field"><label>Amount ($)</label><input id="cf-pramt" type="number" value="${c.prevRide?c.prevRide.amount:''}" /></div>
+      </div>
+      <div class="section-div">Next Ride</div>
+      <div class="field"><label>Date</label><input id="cf-nrdate" type="date" /></div>
+      <div class="form-grid">
+        <div class="field"><label>Route</label><input id="cf-nrroute" placeholder="FLL → MIA" value="${c.nextRide?c.nextRide.route:''}" /></div>
+        <div class="field"><label>Amount ($)</label><input id="cf-nramt" type="number" value="${c.nextRide?c.nextRide.amount:''}" /></div>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="crmCloseModal()">Cancel</button>
+        <button class="btn-save" onclick="crmSaveRide(${id})">Save</button>
+      </div>`);
+  };
+
+  window.crmSaveRide = function(id){
+    const c=window.crmContacts.find(x=>x.id===id);
+    const pr=document.getElementById('cf-prroute').value.trim();
+    const pa=parseFloat(document.getElementById('cf-pramt').value);
+    const pd=document.getElementById('cf-prdate').value;
+    if(pr&&pa){ c.prevRide={date:pd?new Date(pd).toLocaleDateString('en-US',{month:'short',day:'numeric'}):crmTodayLabel(),route:pr,amount:pa}; c.rides=(c.rides||0)+1; if(!c.avgFare)c.avgFare=pa; c.lastContact=pd||crmToday(); }
+    const nr=document.getElementById('cf-nrroute').value.trim();
+    const na=parseFloat(document.getElementById('cf-nramt').value);
+    const nd=document.getElementById('cf-nrdate').value;
+    if(nr&&na){ c.nextRide={date:nd?new Date(nd).toLocaleDateString('en-US',{month:'short',day:'numeric'}):crmTodayLabel(),route:nr,amount:na}; }
+    crmSave(); crmCloseModal();
+  };
+
+  window.crmExport = function(){
+    const blob=new Blob([JSON.stringify(window.crmContacts,null,2)],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download='odom-crm-backup-'+new Date().toISOString().split('T')[0]+'.json'; a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  window.crmImport = function(event){
+    const file=event.target.files[0]; if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(e){
+      try{
+        const data=JSON.parse(e.target.result);
+        if(Array.isArray(data)){ window.crmContacts=data; window.crmNextId=Math.max(...data.map(c=>c.id),0)+1; crmSave(); crmRender(); alert('CRM imported — '+data.length+' contacts loaded.'); }
+      }catch(err){alert('Invalid file.');}
     };
     reader.readAsText(file);
   };
-  input.click();
-}
 
-function initials(n) { return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
-function avatarClass(t) { return t==='Corporate'?'av-corp':t==='Hotel/Concierge'?'av-hotel':'av-prospect'; }
-function heatClass(h) { return h==='Hot'?'heat-hot':h==='Warm'?'heat-warm':'heat-cold'; }
-function isOverdue(d) { return d && new Date(d) <= new Date(); }
-function formatDate(d) { if(!d) return null; return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
-function today() { return new Date().toISOString().slice(0,10); }
-function todayLabel() { return new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
-
-function daysSince(d) {
-  if (!d) return null;
-  const diff = Math.floor((new Date() - new Date(d)) / (1000*60*60*24));
-  if (diff <= 0) return 'Today';
-  if (diff === 1) return '1 day ago';
-  return diff + ' days ago';
-}
-function isStale(d) {
-  if (!d) return true;
-  return Math.floor((new Date() - new Date(d)) / (1000*60*60*24)) > 14;
-}
-function monthlyProj(c) {
-  if (!c.frequency || !c.avgFare) return 0;
-  return Math.round(c.frequency * c.avgFare * 4);
-}
-function annualProj(c) { return monthlyProj(c) * 12; }
-function lifetimeVal(c) { return Math.round((c.rides||0) * (c.avgFare||AVG_FARE)); }
-
-function render() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  const filtered = contacts.filter(c => {
-    const mf = filter==='All' || c.type===filter || (filter==='Hot' && c.heat==='Hot');
-    const ms = !q || c.name.toLowerCase().includes(q) || (c.company||'').toLowerCase().includes(q);
-    return mf && ms;
+  // Init on tab activation
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      if(this.dataset.tab==='crm') setTimeout(crmRender, 50);
+    });
   });
 
-  const totalMonthly = contacts.reduce((s,c) => s + monthlyProj(c), 0);
-  const hot = contacts.filter(c => c.heat==='Hot').length;
-  const due = contacts.filter(c => isOverdue(c.followUp)).length;
+  // Keyboard close
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') crmCloseModal(); });
 
-  document.getElementById('statsBar').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Monthly projected</div><div class="stat-val">$${totalMonthly.toLocaleString()}</div></div>
-    <div class="stat-card"><div class="stat-label">Hot leads</div><div class="stat-val">${hot}</div></div>
-    <div class="stat-card"><div class="stat-label">Follow-ups due</div><div class="stat-val" style="${due>0?'color:#dc2626':''}">${due}</div></div>
-  `;
-
-  const pills = ['All','Hot','Prospect','Corporate','Hotel/Concierge'];
-  document.getElementById('filters').innerHTML = pills.map(p =>
-    `<div class="pill ${filter===p?'active':''}" onclick="setFilter('${p}')">${p}</div>`
-  ).join('');
-
-  if (!filtered.length) {
-    document.getElementById('contactList').innerHTML = '<div class="empty">No contacts found</div>';
-    return;
-  }
-
-  document.getElementById('contactList').innerHTML = filtered.map(c => {
-    const isExp = expanded === c.id;
-    const fu = formatDate(c.followUp);
-    const overdue = isOverdue(c.followUp);
-    const since = daysSince(c.lastContact);
-    const stale = isStale(c.lastContact) && c.rides > 0;
-    const mp = monthlyProj(c);
-    const ap = annualProj(c);
-    const lv = lifetimeVal(c);
-
-    return `
-    <div class="contact-card" onclick="toggleExpand(${c.id})">
-      <div class="card-top">
-        <div class="avatar ${avatarClass(c.type)}">${initials(c.name)}</div>
-        <div style="flex:1;min-width:0;">
-          <div class="card-name">${c.name}</div>
-          <div class="card-sub">${c.title?c.title+' · ':''}${c.company||c.type}</div>
-        </div>
-        <div class="card-right">
-          <span class="heat-badge ${heatClass(c.heat)}">${c.heat}</span>
-          ${fu ? `<span class="follow-tag ${overdue?'due':''}">${overdue?'Due ':''}${fu}</span>` : ''}
-        </div>
-      </div>
-
-      <div class="card-meta">
-        <div class="meta-item ${stale?'stale':''}">Last contact <b>${since||'Never'}</b></div>
-        ${c.rides ? `<div class="meta-item">Rides <b>${c.rides}</b></div>` : ''}
-        ${lv ? `<div class="meta-item">Lifetime <b>$${lv.toLocaleString()}</b></div>` : ''}
-      </div>
-
-      ${isExp ? `
-        ${(c.prevRide||c.nextRide) ? `
-        <div class="ride-row" onclick="event.stopPropagation()">
-          <div class="ride-cell">
-            <div class="ride-dir">Previous ride</div>
-            ${c.prevRide
-              ? `<div class="ride-date">${c.prevRide.date}</div><div class="ride-amt">${c.prevRide.route} · $${c.prevRide.amount}</div>`
-              : `<div class="ride-none">None logged</div>`}
-          </div>
-          <div class="ride-cell">
-            <div class="ride-dir">Next ride</div>
-            ${c.nextRide
-              ? `<div class="ride-date">${c.nextRide.date}</div><div class="ride-amt">${c.nextRide.route} · $${c.nextRide.amount}</div>`
-              : `<div class="ride-none">Not scheduled</div>`}
-          </div>
-        </div>` : ''}
-
-        ${mp || ap ? `
-        <div class="proj-row" onclick="event.stopPropagation()">
-          <div class="proj-cell"><div class="proj-label">Monthly</div><div class="proj-val">$${mp.toLocaleString()}</div></div>
-          <div class="proj-cell"><div class="proj-label">Annual</div><div class="proj-val">$${ap.toLocaleString()}</div></div>
-          <div class="proj-cell"><div class="proj-label">Lifetime</div><div class="proj-val">$${lv.toLocaleString()}</div></div>
-        </div>` : ''}
-
-        ${c.notes.length ? `<div class="last-note" onclick="event.stopPropagation()">"${c.notes[c.notes.length-1].text}"</div>` : ''}
-
-        <div class="card-actions" onclick="event.stopPropagation()">
-          <div class="action-btn primary" onclick="doText(${c.id})">Text</div>
-          <div class="action-btn primary" onclick="doEmail(${c.id})">Email</div>
-          <div class="action-btn" onclick="openNote(${c.id})">Note</div>
-          <div class="action-btn" onclick="openRide(${c.id})">Ride</div>
-          <div class="action-btn" onclick="openEdit(${c.id})">Edit</div>
-        </div>
-      ` : ''}
-    </div>`;
-  }).join('');
-}
-
-function setFilter(f) { filter = f; render(); }
-function toggleExpand(id) { expanded = expanded===id ? null : id; render(); }
-
-function openAdd() {
-  showModal(`
-    <div class="modal-handle"></div>
-    <h2>New contact</h2>
-    <div class="form-row"><label>Name *</label><input id="f-name" placeholder="Full name" autocomplete="off" /></div>
-    <div class="form-grid">
-      <div class="form-row"><label>Phone</label><input id="f-phone" type="tel" placeholder="(954) 555-0000" /></div>
-      <div class="form-row"><label>Email</label><input id="f-email" type="email" placeholder="optional" /></div>
-    </div>
-    <div class="form-grid">
-      <div class="form-row"><label>Title</label><input id="f-title" placeholder="optional" /></div>
-      <div class="form-row"><label>Company</label><input id="f-company" placeholder="optional" /></div>
-    </div>
-    <div class="form-grid">
-      <div class="form-row"><label>Type</label><select id="f-type">${TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div>
-      <div class="form-row"><label>Heat</label><select id="f-heat">${HEATS.map(h=>`<option>${h}</option>`).join('')}</select></div>
-    </div>
-    <div class="form-grid">
-      <div class="form-row"><label>Rides / week</label><input id="f-freq" type="number" min="0" step="0.5" placeholder="0" /></div>
-      <div class="form-row"><label>Avg fare ($)</label><input id="f-avg" type="number" placeholder="${AVG_FARE}" /></div>
-    </div>
-    <div class="form-row"><label>First note</label><textarea id="f-note" placeholder="Where you met, what they said..."></textarea></div>
-    <div class="form-grid">
-      <div class="form-row"><label>Follow-up date</label><input id="f-follow" type="date" /></div>
-      <div class="form-row"><label>Last contact</label><input id="f-last" type="date" value="${today()}" /></div>
-    </div>
-    <div class="modal-btns">
-      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-      <button class="save-btn" onclick="saveAdd()">Save contact</button>
-    </div>
-  `);
-}
-
-function saveAdd() {
-  const name = document.getElementById('f-name').value.trim();
-  if (!name) { alert('Name is required.'); return; }
-  const note = document.getElementById('f-note').value.trim();
-  contacts.unshift({
-    id: nextId++,
-    name,
-    phone: document.getElementById('f-phone').value.trim(),
-    email: document.getElementById('f-email').value.trim(),
-    title: document.getElementById('f-title').value.trim(),
-    company: document.getElementById('f-company').value.trim(),
-    type: document.getElementById('f-type').value,
-    heat: document.getElementById('f-heat').value,
-    notes: note ? [{date: todayLabel(), text: note}] : [],
-    followUp: document.getElementById('f-follow').value || null,
-    lastContact: document.getElementById('f-last').value || today(),
-    rides: 0,
-    avgFare: parseFloat(document.getElementById('f-avg').value) || AVG_FARE,
-    frequency: parseFloat(document.getElementById('f-freq').value) || 0,
-    prevRide: null,
-    nextRide: null
-  });
-  save(); closeModal(); render();
-}
-
-function openEdit(id) {
-  const c = contacts.find(x => x.id===id);
-  showModal(`
-    <div class="modal-handle"></div>
-    <h2>Edit — ${c.name}</h2>
-    <div class="form-row"><label>Name</label><input id="f-name" value="${c.name}" /></div>
-    <div class="form-grid">
-      <div class="form-row"><label>Phone</label><input id="f-phone" value="${c.phone||''}" /></div>
-      <div class="form-row"><label>Email</label><input id="f-email" value="${c.email||''}" /></div>
-    </div>
-    <div class="form-grid">
-      <div class="form-row"><label>Title</label><input id="f-title" value="${c.title||''}" /></div>
-      <div class="form-row"><label>Company</label><input id="f-company" value="${c.company||''}" /></div>
-    </div>
-    <div class="form-grid">
-      <div class="form-row"><label>Type</label><select id="f-type">${TYPES.map(t=>`<option ${c.type===t?'selected':''}>${t}</option>`).join('')}</select></div>
-      <div class="form-row"><label>Heat</label><select id="f-heat">${HEATS.map(h=>`<option ${c.heat===h?'selected':''}>${h}</option>`).join('')}</select></div>
-    </div>
-    <div class="form-grid">
-      <div class="form-row"><label>Rides / week</label><input id="f-freq" type="number" step="0.5" value="${c.frequency||0}" /></div>
-      <div class="form-row"><label>Avg fare ($)</label><input id="f-avg" type="number" value="${c.avgFare||AVG_FARE}" /></div>
-    </div>
-    <div class="form-grid">
-      <div class="form-row"><label>Follow-up date</label><input id="f-follow" type="date" value="${c.followUp||''}" /></div>
-      <div class="form-row"><label>Last contact</label><input id="f-last" type="date" value="${c.lastContact||''}" /></div>
-    </div>
-    <div class="modal-btns">
-      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-      <button class="save-btn" onclick="saveEdit(${id})">Save</button>
-    </div>
-    <button class="delete-btn" onclick="deleteContact(${id})">Delete contact</button>
-  `);
-}
-
-function saveEdit(id) {
-  const c = contacts.find(x => x.id===id);
-  c.name = document.getElementById('f-name').value.trim() || c.name;
-  c.phone = document.getElementById('f-phone').value.trim();
-  c.email = document.getElementById('f-email').value.trim();
-  c.title = document.getElementById('f-title').value.trim();
-  c.company = document.getElementById('f-company').value.trim();
-  c.type = document.getElementById('f-type').value;
-  c.heat = document.getElementById('f-heat').value;
-  c.frequency = parseFloat(document.getElementById('f-freq').value) || 0;
-  c.avgFare = parseFloat(document.getElementById('f-avg').value) || AVG_FARE;
-  c.followUp = document.getElementById('f-follow').value || null;
-  c.lastContact = document.getElementById('f-last').value || c.lastContact;
-  save(); closeModal(); render();
-}
-
-function deleteContact(id) {
-  if (!confirm('Delete this contact? This cannot be undone.')) return;
-  contacts = contacts.filter(x => x.id !== id);
-  expanded = null;
-  save(); closeModal(); render();
-}
-
-function openNote(id) {
-  const c = contacts.find(x => x.id===id);
-  showModal(`
-    <div class="modal-handle"></div>
-    <h2>Notes — ${c.name}</h2>
-    ${c.notes.length ? `<div class="note-history">${c.notes.map(n=>`<div class="note-entry"><span class="note-date">${n.date}</span>${n.text}</div>`).join('')}</div>` : ''}
-    <textarea id="n-text" placeholder="Add a note..." style="width:100%;height:90px;resize:none;padding:10px 12px;border-radius:10px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text);font-size:15px;font-family:inherit;outline:none;"></textarea>
-    <div class="modal-btns">
-      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-      <button class="save-btn" onclick="saveNote(${id})">Save note</button>
-    </div>
-  `);
-}
-
-function saveNote(id) {
-  const c = contacts.find(x => x.id===id);
-  const txt = document.getElementById('n-text').value.trim();
-  if (txt) {
-    c.notes.push({date: todayLabel(), text: txt});
-    c.lastContact = today();
-  }
-  save(); closeModal(); render();
-}
-
-function openRide(id) {
-  const c = contacts.find(x => x.id===id);
-  showModal(`
-    <div class="modal-handle"></div>
-    <h2>Rides — ${c.name}</h2>
-    <div class="section-label">Previous ride</div>
-    <div class="form-row"><label>Date</label><input id="pr-date" type="date" value="${c.prevRide?today():''}" /></div>
-    <div class="form-grid">
-      <div class="form-row"><label>Route</label><input id="pr-route" placeholder="FLL → MIA" value="${c.prevRide?c.prevRide.route:''}" /></div>
-      <div class="form-row"><label>Amount ($)</label><input id="pr-amt" type="number" value="${c.prevRide?c.prevRide.amount:''}" /></div>
-    </div>
-    <div class="section-label">Next ride</div>
-    <div class="form-row"><label>Date</label><input id="nr-date" type="date" value="${c.nextRide?'':''}" /></div>
-    <div class="form-grid">
-      <div class="form-row"><label>Route</label><input id="nr-route" placeholder="FLL → MIA" value="${c.nextRide?c.nextRide.route:''}" /></div>
-      <div class="form-row"><label>Amount ($)</label><input id="nr-amt" type="number" value="${c.nextRide?c.nextRide.amount:''}" /></div>
-    </div>
-    <div class="modal-btns">
-      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-      <button class="save-btn" onclick="saveRide(${id})">Save</button>
-    </div>
-  `);
-}
-
-function saveRide(id) {
-  const c = contacts.find(x => x.id===id);
-  const pr = document.getElementById('pr-route').value.trim();
-  const pa = parseFloat(document.getElementById('pr-amt').value);
-  const pd = document.getElementById('pr-date').value;
-  if (pr && pa) {
-    c.prevRide = {
-      date: pd ? new Date(pd).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : todayLabel(),
-      route: pr, amount: pa
-    };
-    c.rides = (c.rides||0) + 1;
-    if (!c.avgFare) c.avgFare = pa;
-    c.lastContact = pd || today();
-  }
-  const nr = document.getElementById('nr-route').value.trim();
-  const na = parseFloat(document.getElementById('nr-amt').value);
-  const nd = document.getElementById('nr-date').value;
-  if (nr && na) {
-    c.nextRide = {
-      date: nd ? new Date(nd).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '',
-      route: nr, amount: na
-    };
-  }
-  save(); closeModal(); render();
-}
-
-function doText(id) {
-  const c = contacts.find(x => x.id===id);
-  if (c.phone) window.location.href = 'sms:' + c.phone.replace(/\D/g,'');
-}
-function doEmail(id) {
-  const c = contacts.find(x => x.id===id);
-  if (c.email) window.location.href = 'mailto:' + c.email;
-  else alert('No email on file for ' + c.name + '.');
-}
-
-function showModal(html) {
-  document.getElementById('modalContent').innerHTML = html;
-  document.getElementById('modalBg').style.display = 'flex';
-}
-function closeModal() {
-  document.getElementById('modalBg').style.display = 'none';
-  render();
-}
-function handleModalBgClick(e) {
-  if (e.target === document.getElementById('modalBg')) closeModal();
-}
-
-// Keyboard shortcut: Escape closes modal
-document.addEventListener('keydown', e => { if (e.key==='Escape') closeModal(); });
-
-render();
+})();
 </script>
-</body>
-</html>
+
+</body></html>
