@@ -851,7 +851,7 @@
     const body = buildSMSBody(r);
     const encoded = encodeURIComponent(body);
     const phone = r.clientPhone.replace(/\D/g,'');
-    window.location.href = `sms:${phone}?body=${encoded}`;
+    window.location.href = `openphone://message?number=${phone}&from=7543547700&text=${encoded}`;
     // mark sent
     r.confirmSent = true;
     resSave(); resRender();
@@ -1231,7 +1231,7 @@
 
   window.crmSetFilter = function(f){ window.crmFilter=f; crmRender(); };
   window.crmToggle = function(id){ window.crmExpanded=window.crmExpanded===id?null:id; crmRender(); };
-  window.crmText = function(id){ const c=window.crmContacts.find(x=>x.id===id); if(c&&c.phone) window.location.href='sms:'+c.phone.replace(/\D/g,''); };
+  window.crmText = function(id){ const c=window.crmContacts.find(x=>x.id===id); if(c&&c.phone) window.location.href='openphone://message?number='+c.phone.replace(/\D/g,'')+'&from=7543547700'; };
   window.crmEmail = function(id){ const c=window.crmContacts.find(x=>x.id===id); if(c&&c.email) window.location.href='mailto:'+c.email; else alert('No email on file.'); };
 
   function crmShowModal(html){ document.getElementById('crm-modal').innerHTML=html; document.getElementById('crm-modal-bg').style.display='flex'; }
