@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="ODOM CRM" />
+<title>ODOM CRM</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f5f5f3;
+    --bg3: #eeece8;
+    --text: #1a1a1a;
+    --text2: #6b6b68;
+    --text3: #999994;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.22);
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --bg2: #2c2c2e;
+      --bg3: #3a3a3c;
+      --text: #f2f2f7;
+      --text2: #aeaeb2;
+      --text3: #636366;
+      --border: rgba(255,255,255,0.1);
+      --border2: rgba(255,255,255,0.2);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; }
+
+  .app-header { background: var(--bg); border-bottom: 0.5px solid var(--border); padding: 16px 16px 12px; position: sticky; top: 0; z-index: 10; }
+  .app-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; color: var(--text); }
+  .app-header p { font-size: 12px; color: var(--text3); margin-top: 1px; }
+
+  .main { padding: 16px; max-width: 600px; margin: 0 auto; }
+
+  .stats-bar { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 16px; }
+  .stat-card { background: var(--bg); border-radius: var(--radius); padding: 10px 12px; border: 0.5px solid var(--border); }
+  .stat-label { font-size: 11px; color: var(--text2); margin-bottom: 3px; }
+  .stat-val { font-size: 20px; font-weight: 600; color: var(--text); }
+
+  .top-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+  .search-input { flex: 1; padding: 10px 12px; border-radius: var(--radius); border: 0.5px solid var(--border); background: var(--bg); color: var(--text); font-size: 15px; outline: none; }
+  .search-input:focus { border-color: var(--border2); }
+  .add-btn { background: var(--text); color: var(--bg); border: none; border-radius: var(--radius); padding: 10px 16px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .add-btn:active { opacity: 0.8; transform: scale(0.97); }
+
+  .filters { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .pill { font-size: 12px; padding: 5px 13px; border-radius: 99px; border: 0.5px solid var(--border2); background: var(--bg); color: var(--text2); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+  .pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+  .contact-list { display: flex; flex-direction: column; gap: 8px; }
+  .contact-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 13px 14px; cursor: pointer; transition: border-color 0.15s; }
+  .contact-card:active { background: var(--bg2); }
+
+  .card-top { display: flex; align-items: center; gap: 10px; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
+  .av-corp { background: #dbeafe; color: #1e40af; }
+  .av-prospect { background: #ede9fe; color: #4c1d95; }
+  .av-hotel { background: #d1fae5; color: #065f46; }
+  @media (prefers-color-scheme: dark) {
+    .av-corp { background: #1e3a5f; color: #93c5fd; }
+    .av-prospect { background: #2e1a5e; color: #c4b5fd; }
+    .av-hotel { background: #064e3b; color: #6ee7b7; }
+  }
+  .card-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .card-sub { font-size: 12px; color: var(--text2); margin-top: 1px; }
+  .card-right { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+
+  .heat-badge { font-size: 11px; padding: 2px 9px; border-radius: 99px; font-weight: 600; }
+  .heat-hot { background: #fee2d5; color: #9a3412; }
+  .heat-warm { background: #fef3c7; color: #92400e; }
+  .heat-cold { background: #dbeafe; color: #1e40af; }
+  @media (prefers-color-scheme: dark) {
+    .heat-hot { background: #431407; color: #fdba74; }
+    .heat-warm { background: #451a03; color: #fcd34d; }
+    .heat-cold { background: #1e3a5f; color: #93c5fd; }
+  }
+
+  .follow-tag { font-size: 11px; color: var(--text3); }
+  .follow-tag.due { color: #dc2626; font-weight: 600; }
+
+  .card-meta { display: flex; gap: 14px; margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--border); flex-wrap: wrap; }
+  .meta-item { font-size: 12px; color: var(--text2); }
+  .meta-item b { color: var(--text); font-weight: 600; }
+  .meta-item.stale { color: #dc2626; }
+  .meta-item.stale b { color: #dc2626; }
+
+  .ride-row { display: flex; gap: 8px; margin-top: 10px; }
+  .ride-cell { flex: 1; background: var(--bg2); border-radius: var(--radius); padding: 9px 11px; }
+  .ride-dir { font-size: 10px; color: var(--text3); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .ride-date { font-size: 13px; font-weight: 600; color: var(--text); }
+  .ride-amt { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .ride-none { font-size: 12px; color: var(--text3); font-style: italic; }
+
+  .proj-row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; margin-top: 8px; }
+  .proj-cell { background: var(--bg2); border-radius: var(--radius); padding: 8px 10px; }
+  .proj-label { font-size: 10px; color: var(--text3); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .proj-val { font-size: 15px; font-weight: 600; color: var(--text); }
+
+  .last-note { font-size: 12px; color: var(--text2); margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--border); font-style: italic; line-height: 1.5; }
+
+  .card-actions { display: flex; gap: 6px; margin-top: 10px; }
+  .action-btn { flex: 1; font-size: 12px; font-weight: 500; padding: 8px 4px; border-radius: var(--radius); border: 0.5px solid var(--border2); background: var(--bg2); color: var(--text2); cursor: pointer; text-align: center; transition: background 0.1s; }
+  .action-btn:active { background: var(--bg3); }
+  .action-btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .action-btn.primary:active { opacity: 0.85; }
+
+  .empty { text-align: center; padding: 3rem 1rem; color: var(--text3); font-size: 15px; }
+
+  /* Modal */
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: flex-end; justify-content: center; z-index: 100; padding: 0; }
+  @media (min-width: 500px) { .modal-bg { align-items: center; padding: 1rem; } }
+  .modal { background: var(--bg); border-radius: 20px 20px 0 0; padding: 20px 16px 32px; width: 100%; max-width: 480px; border: 0.5px solid var(--border); max-height: 92vh; overflow-y: auto; }
+  @media (min-width: 500px) { .modal { border-radius: var(--radius-lg); padding: 20px; } }
+  .modal-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 99px; margin: 0 auto 16px; }
+  .modal h2 { font-size: 17px; font-weight: 600; margin-bottom: 16px; }
+
+  .form-row { margin-bottom: 12px; }
+  .form-row label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 4px; font-weight: 500; }
+  .form-row input, .form-row select, .form-row textarea {
+    width: 100%; padding: 10px 12px; border-radius: var(--radius); border: 0.5px solid var(--border2);
+    background: var(--bg2); color: var(--text); font-size: 15px; outline: none;
+    -webkit-appearance: none; appearance: none;
+  }
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--text3); }
+  .form-row textarea { height: 72px; resize: none; font-family: inherit; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .section-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin: 14px 0 8px; }
+
+  .modal-btns { display: flex; gap: 8px; margin-top: 16px; }
+  .modal-btns button { flex: 1; padding: 12px; border-radius: var(--radius); font-size: 15px; font-weight: 600; cursor: pointer; border: none; }
+  .cancel-btn { background: var(--bg2); color: var(--text2); }
+  .save-btn { background: var(--text); color: var(--bg); }
+  .save-btn:active { opacity: 0.85; }
+
+  .note-history { background: var(--bg2); border-radius: var(--radius); padding: 10px 12px; max-height: 150px; overflow-y: auto; margin-bottom: 12px; }
+  .note-entry { padding: 5px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; line-height: 1.5; }
+  .note-entry:last-child { border: none; padding-bottom: 0; }
+  .note-date { color: var(--text3); font-size: 11px; display: block; margin-bottom: 1px; }
+
+  .delete-btn { width: 100%; padding: 12px; border-radius: var(--radius); font-size: 14px; font-weight: 500; cursor: pointer; border: 0.5px solid #fca5a5; background: transparent; color: #dc2626; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <h1>ODOM CRM</h1>
+  <p>Rumor Rides · Discreet Luxury Transportation</p>
+</div>
+
+<div class="main">
+  <div class="stats-bar" id="statsBar"></div>
+  <div class="top-bar">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search contacts..." oninput="render()" autocomplete="off" />
+    <button class="add-btn" onclick="openAdd()">+ Add</button>
+  </div>
+  <div class="filters" id="filters"></div>
+  <div class="contact-list" id="contactList"></div>
+</div>
+
+<div class="modal-bg" id="modalBg" style="display:none;" onclick="handleModalBgClick(event)">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+const TYPES = ['Prospect','Corporate','Hotel/Concierge'];
+const HEATS = ['Hot','Warm','Cold'];
+const AVG_FARE = 185;
+const STORAGE_KEY = 'odom_crm_contacts';
+const ID_KEY = 'odom_crm_nextid';
+
+function loadContacts() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  return [
+    {
+      id:1, name:'Marcus Webb', title:'VP Operations', company:'Webb Capital',
+      type:'Corporate', heat:'Hot',
+      phone:'954-555-0182', email:'marcus@webbcapital.com',
+      notes:[{date:'Mar 27',text:'Weekly SFO run. Prefers silence. Tip well.'}],
+      followUp:'2026-04-01', lastContact:'2026-03-27',
+      rides:12, avgFare:210, frequency:1,
+      prevRide:{date:'Mar 22',route:'FLL → MIA',amount:195},
+      nextRide:{date:'Apr 3',route:'FLL → MIA',amount:195}
+    },
+    {
+      id:2, name:'Diane Roth', title:'Concierge Manager', company:'The Dalmar Hotel',
+      type:'Hotel/Concierge', heat:'Warm',
+      phone:'954-555-0341', email:'droth@dalmar.com',
+      notes:[{date:'Mar 25',text:'Intro at hotel. Handles 3-4 exec transfers/week. Wants rate card.'}],
+      followUp:'2026-03-30', lastContact:'2026-03-25',
+      rides:0, avgFare:0, frequency:0, prevRide:null, nextRide:null
+    },
+    {
+      id:3, name:'James Okoro', title:null, company:null,
+      type:'Prospect', heat:'Hot',
+      phone:'561-555-0764', email:'',
+      notes:[{date:'Mar 28',text:'Met on Uber Black PBI→FLL. CEO. Wants direct number.'}],
+      followUp:'2026-03-29', lastContact:'2026-03-28',
+      rides:1, avgFare:175, frequency:0,
+      prevRide:{date:'Mar 28',route:'PBI → FLL',amount:175},
+      nextRide:null
+    },
+    {
+      id:4, name:'Sandra Lin', title:'CFO', company:'Tidewater Group',
+      type:'Corporate', heat:'Warm',
+      phone:'305-555-0293', email:'slin@tidewater.com',
+      notes:[], followUp:null, lastContact:'2026-03-10',
+      rides:4, avgFare:195, frequency:2,
+      prevRide:{date:'Mar 10',route:'Boca → FLL',amount:195},
+      nextRide:{date:'Apr 7',route:'Boca → FLL',amount:195}
+    }
+  ];
+}
+
+function loadNextId() {
+  try { return parseInt(localStorage.getItem(ID_KEY)||'5'); } catch(e) { return 5; }
+}
+
+let contacts = loadContacts();
+let nextId = loadNextId();
+let filter = 'All';
+let expanded = null;
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
+    localStorage.setItem(ID_KEY, String(nextId));
+  } catch(e) {}
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(contacts, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'odom-crm-backup.json'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importJSON() {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (Array.isArray(data)) {
+          contacts = data;
+          nextId = Math.max(...data.map(c=>c.id), 0) + 1;
+          save(); render();
+          alert('Contacts imported successfully.');
+        }
+      } catch(err) { alert('Invalid file.'); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function initials(n) { return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
+function avatarClass(t) { return t==='Corporate'?'av-corp':t==='Hotel/Concierge'?'av-hotel':'av-prospect'; }
+function heatClass(h) { return h==='Hot'?'heat-hot':h==='Warm'?'heat-warm':'heat-cold'; }
+function isOverdue(d) { return d && new Date(d) <= new Date(); }
+function formatDate(d) { if(!d) return null; return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function today() { return new Date().toISOString().slice(0,10); }
+function todayLabel() { return new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+
+function daysSince(d) {
+  if (!d) return null;
+  const diff = Math.floor((new Date() - new Date(d)) / (1000*60*60*24));
+  if (diff <= 0) return 'Today';
+  if (diff === 1) return '1 day ago';
+  return diff + ' days ago';
+}
+function isStale(d) {
+  if (!d) return true;
+  return Math.floor((new Date() - new Date(d)) / (1000*60*60*24)) > 14;
+}
+function monthlyProj(c) {
+  if (!c.frequency || !c.avgFare) return 0;
+  return Math.round(c.frequency * c.avgFare * 4);
+}
+function annualProj(c) { return monthlyProj(c) * 12; }
+function lifetimeVal(c) { return Math.round((c.rides||0) * (c.avgFare||AVG_FARE)); }
+
+function render() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = contacts.filter(c => {
+    const mf = filter==='All' || c.type===filter || (filter==='Hot' && c.heat==='Hot');
+    const ms = !q || c.name.toLowerCase().includes(q) || (c.company||'').toLowerCase().includes(q);
+    return mf && ms;
+  });
+
+  const totalMonthly = contacts.reduce((s,c) => s + monthlyProj(c), 0);
+  const hot = contacts.filter(c => c.heat==='Hot').length;
+  const due = contacts.filter(c => isOverdue(c.followUp)).length;
+
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Monthly projected</div><div class="stat-val">$${totalMonthly.toLocaleString()}</div></div>
+    <div class="stat-card"><div class="stat-label">Hot leads</div><div class="stat-val">${hot}</div></div>
+    <div class="stat-card"><div class="stat-label">Follow-ups due</div><div class="stat-val" style="${due>0?'color:#dc2626':''}">${due}</div></div>
+  `;
+
+  const pills = ['All','Hot','Prospect','Corporate','Hotel/Concierge'];
+  document.getElementById('filters').innerHTML = pills.map(p =>
+    `<div class="pill ${filter===p?'active':''}" onclick="setFilter('${p}')">${p}</div>`
+  ).join('');
+
+  if (!filtered.length) {
+    document.getElementById('contactList').innerHTML = '<div class="empty">No contacts found</div>';
+    return;
+  }
+
+  document.getElementById('contactList').innerHTML = filtered.map(c => {
+    const isExp = expanded === c.id;
+    const fu = formatDate(c.followUp);
+    const overdue = isOverdue(c.followUp);
+    const since = daysSince(c.lastContact);
+    const stale = isStale(c.lastContact) && c.rides > 0;
+    const mp = monthlyProj(c);
+    const ap = annualProj(c);
+    const lv = lifetimeVal(c);
+
+    return `
+    <div class="contact-card" onclick="toggleExpand(${c.id})">
+      <div class="card-top">
+        <div class="avatar ${avatarClass(c.type)}">${initials(c.name)}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="card-name">${c.name}</div>
+          <div class="card-sub">${c.title?c.title+' · ':''}${c.company||c.type}</div>
+        </div>
+        <div class="card-right">
+          <span class="heat-badge ${heatClass(c.heat)}">${c.heat}</span>
+          ${fu ? `<span class="follow-tag ${overdue?'due':''}">${overdue?'Due ':''}${fu}</span>` : ''}
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <div class="meta-item ${stale?'stale':''}">Last contact <b>${since||'Never'}</b></div>
+        ${c.rides ? `<div class="meta-item">Rides <b>${c.rides}</b></div>` : ''}
+        ${lv ? `<div class="meta-item">Lifetime <b>$${lv.toLocaleString()}</b></div>` : ''}
+      </div>
+
+      ${isExp ? `
+        ${(c.prevRide||c.nextRide) ? `
+        <div class="ride-row" onclick="event.stopPropagation()">
+          <div class="ride-cell">
+            <div class="ride-dir">Previous ride</div>
+            ${c.prevRide
+              ? `<div class="ride-date">${c.prevRide.date}</div><div class="ride-amt">${c.prevRide.route} · $${c.prevRide.amount}</div>`
+              : `<div class="ride-none">None logged</div>`}
+          </div>
+          <div class="ride-cell">
+            <div class="ride-dir">Next ride</div>
+            ${c.nextRide
+              ? `<div class="ride-date">${c.nextRide.date}</div><div class="ride-amt">${c.nextRide.route} · $${c.nextRide.amount}</div>`
+              : `<div class="ride-none">Not scheduled</div>`}
+          </div>
+        </div>` : ''}
+
+        ${mp || ap ? `
+        <div class="proj-row" onclick="event.stopPropagation()">
+          <div class="proj-cell"><div class="proj-label">Monthly</div><div class="proj-val">$${mp.toLocaleString()}</div></div>
+          <div class="proj-cell"><div class="proj-label">Annual</div><div class="proj-val">$${ap.toLocaleString()}</div></div>
+          <div class="proj-cell"><div class="proj-label">Lifetime</div><div class="proj-val">$${lv.toLocaleString()}</div></div>
+        </div>` : ''}
+
+        ${c.notes.length ? `<div class="last-note" onclick="event.stopPropagation()">"${c.notes[c.notes.length-1].text}"</div>` : ''}
+
+        <div class="card-actions" onclick="event.stopPropagation()">
+          <div class="action-btn primary" onclick="doText(${c.id})">Text</div>
+          <div class="action-btn primary" onclick="doEmail(${c.id})">Email</div>
+          <div class="action-btn" onclick="openNote(${c.id})">Note</div>
+          <div class="action-btn" onclick="openRide(${c.id})">Ride</div>
+          <div class="action-btn" onclick="openEdit(${c.id})">Edit</div>
+        </div>
+      ` : ''}
+    </div>`;
+  }).join('');
+}
+
+function setFilter(f) { filter = f; render(); }
+function toggleExpand(id) { expanded = expanded===id ? null : id; render(); }
+
+function openAdd() {
+  showModal(`
+    <div class="modal-handle"></div>
+    <h2>New contact</h2>
+    <div class="form-row"><label>Name *</label><input id="f-name" placeholder="Full name" autocomplete="off" /></div>
+    <div class="form-grid">
+      <div class="form-row"><label>Phone</label><input id="f-phone" type="tel" placeholder="(954) 555-0000" /></div>
+      <div class="form-row"><label>Email</label><input id="f-email" type="email" placeholder="optional" /></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Title</label><input id="f-title" placeholder="optional" /></div>
+      <div class="form-row"><label>Company</label><input id="f-company" placeholder="optional" /></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Type</label><select id="f-type">${TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div>
+      <div class="form-row"><label>Heat</label><select id="f-heat">${HEATS.map(h=>`<option>${h}</option>`).join('')}</select></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Rides / week</label><input id="f-freq" type="number" min="0" step="0.5" placeholder="0" /></div>
+      <div class="form-row"><label>Avg fare ($)</label><input id="f-avg" type="number" placeholder="${AVG_FARE}" /></div>
+    </div>
+    <div class="form-row"><label>First note</label><textarea id="f-note" placeholder="Where you met, what they said..."></textarea></div>
+    <div class="form-grid">
+      <div class="form-row"><label>Follow-up date</label><input id="f-follow" type="date" /></div>
+      <div class="form-row"><label>Last contact</label><input id="f-last" type="date" value="${today()}" /></div>
+    </div>
+    <div class="modal-btns">
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+      <button class="save-btn" onclick="saveAdd()">Save contact</button>
+    </div>
+  `);
+}
+
+function saveAdd() {
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) { alert('Name is required.'); return; }
+  const note = document.getElementById('f-note').value.trim();
+  contacts.unshift({
+    id: nextId++,
+    name,
+    phone: document.getElementById('f-phone').value.trim(),
+    email: document.getElementById('f-email').value.trim(),
+    title: document.getElementById('f-title').value.trim(),
+    company: document.getElementById('f-company').value.trim(),
+    type: document.getElementById('f-type').value,
+    heat: document.getElementById('f-heat').value,
+    notes: note ? [{date: todayLabel(), text: note}] : [],
+    followUp: document.getElementById('f-follow').value || null,
+    lastContact: document.getElementById('f-last').value || today(),
+    rides: 0,
+    avgFare: parseFloat(document.getElementById('f-avg').value) || AVG_FARE,
+    frequency: parseFloat(document.getElementById('f-freq').value) || 0,
+    prevRide: null,
+    nextRide: null
+  });
+  save(); closeModal(); render();
+}
+
+function openEdit(id) {
+  const c = contacts.find(x => x.id===id);
+  showModal(`
+    <div class="modal-handle"></div>
+    <h2>Edit — ${c.name}</h2>
+    <div class="form-row"><label>Name</label><input id="f-name" value="${c.name}" /></div>
+    <div class="form-grid">
+      <div class="form-row"><label>Phone</label><input id="f-phone" value="${c.phone||''}" /></div>
+      <div class="form-row"><label>Email</label><input id="f-email" value="${c.email||''}" /></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Title</label><input id="f-title" value="${c.title||''}" /></div>
+      <div class="form-row"><label>Company</label><input id="f-company" value="${c.company||''}" /></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Type</label><select id="f-type">${TYPES.map(t=>`<option ${c.type===t?'selected':''}>${t}</option>`).join('')}</select></div>
+      <div class="form-row"><label>Heat</label><select id="f-heat">${HEATS.map(h=>`<option ${c.heat===h?'selected':''}>${h}</option>`).join('')}</select></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Rides / week</label><input id="f-freq" type="number" step="0.5" value="${c.frequency||0}" /></div>
+      <div class="form-row"><label>Avg fare ($)</label><input id="f-avg" type="number" value="${c.avgFare||AVG_FARE}" /></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>Follow-up date</label><input id="f-follow" type="date" value="${c.followUp||''}" /></div>
+      <div class="form-row"><label>Last contact</label><input id="f-last" type="date" value="${c.lastContact||''}" /></div>
+    </div>
+    <div class="modal-btns">
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+      <button class="save-btn" onclick="saveEdit(${id})">Save</button>
+    </div>
+    <button class="delete-btn" onclick="deleteContact(${id})">Delete contact</button>
+  `);
+}
+
+function saveEdit(id) {
+  const c = contacts.find(x => x.id===id);
+  c.name = document.getElementById('f-name').value.trim() || c.name;
+  c.phone = document.getElementById('f-phone').value.trim();
+  c.email = document.getElementById('f-email').value.trim();
+  c.title = document.getElementById('f-title').value.trim();
+  c.company = document.getElementById('f-company').value.trim();
+  c.type = document.getElementById('f-type').value;
+  c.heat = document.getElementById('f-heat').value;
+  c.frequency = parseFloat(document.getElementById('f-freq').value) || 0;
+  c.avgFare = parseFloat(document.getElementById('f-avg').value) || AVG_FARE;
+  c.followUp = document.getElementById('f-follow').value || null;
+  c.lastContact = document.getElementById('f-last').value || c.lastContact;
+  save(); closeModal(); render();
+}
+
+function deleteContact(id) {
+  if (!confirm('Delete this contact? This cannot be undone.')) return;
+  contacts = contacts.filter(x => x.id !== id);
+  expanded = null;
+  save(); closeModal(); render();
+}
+
+function openNote(id) {
+  const c = contacts.find(x => x.id===id);
+  showModal(`
+    <div class="modal-handle"></div>
+    <h2>Notes — ${c.name}</h2>
+    ${c.notes.length ? `<div class="note-history">${c.notes.map(n=>`<div class="note-entry"><span class="note-date">${n.date}</span>${n.text}</div>`).join('')}</div>` : ''}
+    <textarea id="n-text" placeholder="Add a note..." style="width:100%;height:90px;resize:none;padding:10px 12px;border-radius:10px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text);font-size:15px;font-family:inherit;outline:none;"></textarea>
+    <div class="modal-btns">
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+      <button class="save-btn" onclick="saveNote(${id})">Save note</button>
+    </div>
+  `);
+}
+
+function saveNote(id) {
+  const c = contacts.find(x => x.id===id);
+  const txt = document.getElementById('n-text').value.trim();
+  if (txt) {
+    c.notes.push({date: todayLabel(), text: txt});
+    c.lastContact = today();
+  }
+  save(); closeModal(); render();
+}
+
+function openRide(id) {
+  const c = contacts.find(x => x.id===id);
+  showModal(`
+    <div class="modal-handle"></div>
+    <h2>Rides — ${c.name}</h2>
+    <div class="section-label">Previous ride</div>
+    <div class="form-row"><label>Date</label><input id="pr-date" type="date" value="${c.prevRide?today():''}" /></div>
+    <div class="form-grid">
+      <div class="form-row"><label>Route</label><input id="pr-route" placeholder="FLL → MIA" value="${c.prevRide?c.prevRide.route:''}" /></div>
+      <div class="form-row"><label>Amount ($)</label><input id="pr-amt" type="number" value="${c.prevRide?c.prevRide.amount:''}" /></div>
+    </div>
+    <div class="section-label">Next ride</div>
+    <div class="form-row"><label>Date</label><input id="nr-date" type="date" value="${c.nextRide?'':''}" /></div>
+    <div class="form-grid">
+      <div class="form-row"><label>Route</label><input id="nr-route" placeholder="FLL → MIA" value="${c.nextRide?c.nextRide.route:''}" /></div>
+      <div class="form-row"><label>Amount ($)</label><input id="nr-amt" type="number" value="${c.nextRide?c.nextRide.amount:''}" /></div>
+    </div>
+    <div class="modal-btns">
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+      <button class="save-btn" onclick="saveRide(${id})">Save</button>
+    </div>
+  `);
+}
+
+function saveRide(id) {
+  const c = contacts.find(x => x.id===id);
+  const pr = document.getElementById('pr-route').value.trim();
+  const pa = parseFloat(document.getElementById('pr-amt').value);
+  const pd = document.getElementById('pr-date').value;
+  if (pr && pa) {
+    c.prevRide = {
+      date: pd ? new Date(pd).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : todayLabel(),
+      route: pr, amount: pa
+    };
+    c.rides = (c.rides||0) + 1;
+    if (!c.avgFare) c.avgFare = pa;
+    c.lastContact = pd || today();
+  }
+  const nr = document.getElementById('nr-route').value.trim();
+  const na = parseFloat(document.getElementById('nr-amt').value);
+  const nd = document.getElementById('nr-date').value;
+  if (nr && na) {
+    c.nextRide = {
+      date: nd ? new Date(nd).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '',
+      route: nr, amount: na
+    };
+  }
+  save(); closeModal(); render();
+}
+
+function doText(id) {
+  const c = contacts.find(x => x.id===id);
+  if (c.phone) window.location.href = 'sms:' + c.phone.replace(/\D/g,'');
+}
+function doEmail(id) {
+  const c = contacts.find(x => x.id===id);
+  if (c.email) window.location.href = 'mailto:' + c.email;
+  else alert('No email on file for ' + c.name + '.');
+}
+
+function showModal(html) {
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalBg').style.display = 'flex';
+}
+function closeModal() {
+  document.getElementById('modalBg').style.display = 'none';
+  render();
+}
+function handleModalBgClick(e) {
+  if (e.target === document.getElementById('modalBg')) closeModal();
+}
+
+// Keyboard shortcut: Escape closes modal
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeModal(); });
+
+render();
+</script>
+</body>
+</html>
