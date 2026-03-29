@@ -1232,7 +1232,7 @@
   window.crmSetFilter = function(f){ window.crmFilter=f; crmRender(); };
   window.crmToggle = function(id){ window.crmExpanded=window.crmExpanded===id?null:id; crmRender(); };
   window.crmText = function(id){ const c=window.crmContacts.find(x=>x.id===id); if(c&&c.phone) window.location.href='openphone://message?number='+c.phone.replace(/\D/g,'')+'&from=7543547700'; };
-  window.crmEmail = function(id){ const c=window.crmContacts.find(x=>x.id===id); if(c&&c.email) window.location.href='mailto:'+c.email; else alert('No email on file.'); };
+  window.crmEmail = function(id){ const c=window.crmContacts.find(x=>x.id===id); if(c&&c.email) window.location.href='mailto:'+c.email+'?from=riaz@rumorrides.com'; else alert('No email on file.'); };
 
   function crmShowModal(html){ document.getElementById('crm-modal').innerHTML=html; document.getElementById('crm-modal-bg').style.display='flex'; }
   window.crmCloseModal = function(){ document.getElementById('crm-modal-bg').style.display='none'; crmRender(); };
